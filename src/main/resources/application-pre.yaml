@@ -1,0 +1,5 @@
+spring:
+  profiles: pre
+server:
+  port: 8080
+
