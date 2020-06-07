@@ -133,6 +133,15 @@ public class ResultEntity {
                 .build();
     }
 
+    public static ResultEntity of(ResultCode resultCode) {
+        return ResultEntity.builder()
+                .status(resultCode.status())
+                .code(resultCode.value())
+                .message(resultCode.message())
+                .datetime(LocalDateTime.now())
+                .build();
+    }
+
     public static ResultEntity ok(Object data) {
         return ResultEntity.builder()
                 .status(HttpStatus.OK)
