@@ -1,8 +1,12 @@
 package com.okfolio.tero.common;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.okfolio.tero.common.enums.AuthorityGroupEnum;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 /**
  * @author oktfolio oktfolio@gmail.com
@@ -17,60 +21,29 @@ public class AuthorityPool {
         map.put(authority.getCode(), authority);
     }
 
-    public static Authority get(Authority authority) {
-        return (Authority) AUTHORITIES.get(authority.getCode());
+    public static void put(String code, String name, AuthorityGroupEnum group) {
+        ConcurrentMap<String, Authority> authorityMap = Maps.newConcurrentMap();
+        authorityMap.put(code, new Authority(code, name, group));
+        AUTHORITIES.put(group.name(), authorityMap);
     }
 
+    public static Authority get(Authority authority) {
+        return AUTHORITIES.get(authority.getGroup().name()).get(authority.getCode());
+    }
 
-    // private val authorityMap:ConcurrentHashMap<String, Authority> =
-    //
-    // ConcurrentHashMap()
-    //
-    // fun putAuthority(code:String, name:String, group:AuthorityGroupEnum) {
-    //     authorityMap[code] = Authority(code, name, group)
-    // }
-    //
-    // fun putAuthority(authority:Authority) {
-    //     authorityMap[authority.code] = Authority(authority.code, authority.name, authority.group)
-    // }
-    //
-    // fun getAuthorityList():List<Authority>
-    //
-    // {
-    //     return authorityMap.values.toList()
-    // }
-    //
-    // fun getAuthorityCodeList():List<String>
-    //
-    // {
-    //     return authorityMap.values.map {
-    //     it.code
-    // }.toList()
-    // }
-    //
-    // fun getAuthorityGroup():Map<AuthorityGroupEnum, List<Authority>>
-    //
-    // {
-    //     return getAuthorityList().groupBy {
-    //     it.group
-    // }
-    // }
-    //
-    // fun getAuthorityGroupList():List<AuthorityGroup>
-    //
-    // {
-    //     val authorityGroupMap = getAuthorityGroup()
-    //     val authorityGroupList = arrayListOf < AuthorityGroup > ()
-    //     authorityGroupMap.keys.forEach {
-    //     authorityGroupList.add(AuthorityGroup(it, authorityGroupMap.getValue(it)))
-    // }
-    //     return authorityGroupList
-    // }
-    //
-    // fun getAuthorityByCode(code:String):
-    //
-    // Authority {
-    //     return authorityMap[code] !!
-    // }
+    public static List<Authority> getAuthorityList() {
+        List<Authority> list = Lists.newArrayList();
+        AUTHORITIES.entrySet()
+                .forEach(((it)
+                        -> it.getValue()
+                        .forEach((key, value)
+                                -> list.add(value))));
+        return list;
+    }
 
+    public static List<String> getAuthorityCodeList() {
+        return getAuthorityList().stream()
+                .map(Authority::getCode)
+                .collect(Collectors.toList());
+    }
 }
