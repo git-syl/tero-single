@@ -12,7 +12,7 @@ public enum AuthorityEnum {
      *
      */
     ADMIN_USER_CREATE(
-            AuthorityCode.AdminUser.CREATE,
+            AuthorityCode.Admin.User.CREATE,
             "管理_用户_列表_创建",
             AuthorityGroupEnum.ADMIN_USER),
 
@@ -20,7 +20,7 @@ public enum AuthorityEnum {
      *
      */
     ADMIN_USER_DELETE(
-            AuthorityCode.AdminUser.DELETE,
+            AuthorityCode.Admin.User.DELETE,
             "管理_用户_列表_删除",
             AuthorityGroupEnum.ADMIN_USER),
 
@@ -28,7 +28,7 @@ public enum AuthorityEnum {
      *
      */
     ADMIN_USER_UPDATE(
-            AuthorityCode.AdminUser.UPDATE,
+            AuthorityCode.Admin.User.UPDATE,
             "管理_用户_列表_更新",
             AuthorityGroupEnum.ADMIN_USER),
 
@@ -36,7 +36,7 @@ public enum AuthorityEnum {
      *
      */
     ADMIN_USER_RETRIEVE(
-            AuthorityCode.AdminUser.RETRIEVE,
+            AuthorityCode.Admin.User.RETRIEVE,
             "管理_用户_列表_查询",
             AuthorityGroupEnum.ADMIN_USER),
     ;
@@ -61,9 +61,5 @@ public enum AuthorityEnum {
 
     public AuthorityGroupEnum group() {
         return this.group;
-    }
-
-    public String hasAuthority() {
-        return "hasAuthority('" + this.code + "')";
     }
 }
