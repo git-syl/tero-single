@@ -1,5 +1,6 @@
 package com.okfolio.tero.common.enums;
 
+import com.okfolio.tero.common.AuthorityPool;
 import com.okfolio.tero.common.constant.AuthorityCode;
 
 /**
@@ -46,6 +47,7 @@ public enum AuthorityEnum {
         this.code = code;
         this.desc = desc;
         this.group = group;
+        AuthorityPool.put(code, desc, group);
     }
 
     public String code() {
