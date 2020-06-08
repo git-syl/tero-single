@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Log {
-    String name = null;
-    LogTypeEnum type = null;
+    String name() default "";
+    LogTypeEnum type() default LogTypeEnum.DEFAULT;
 }
