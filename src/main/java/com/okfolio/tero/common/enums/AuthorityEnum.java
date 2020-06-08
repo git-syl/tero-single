@@ -9,31 +9,28 @@ import com.okfolio.tero.common.constant.AuthorityCode;
 public enum AuthorityEnum {
 
     /**
-     *
+     * 管理_用户_列表_创建
      */
     ADMIN_USER_CREATE(
             AuthorityCode.Admin.User.CREATE,
             "管理_用户_列表_创建",
             AuthorityGroupEnum.ADMIN_USER),
-
     /**
-     *
+     * 管理_用户_列表_删除
      */
     ADMIN_USER_DELETE(
             AuthorityCode.Admin.User.DELETE,
             "管理_用户_列表_删除",
             AuthorityGroupEnum.ADMIN_USER),
-
     /**
-     *
+     * 管理_用户_列表_更新
      */
     ADMIN_USER_UPDATE(
             AuthorityCode.Admin.User.UPDATE,
             "管理_用户_列表_更新",
             AuthorityGroupEnum.ADMIN_USER),
-
     /**
-     *
+     * 管理_用户_列表_查询
      */
     ADMIN_USER_RETRIEVE(
             AuthorityCode.Admin.User.RETRIEVE,
