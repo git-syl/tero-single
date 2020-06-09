@@ -1,3 +1,29 @@
 server:
   port: 8080
-
+spring:
+  application:
+    name: tero
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/fondo?characterEncoding=utf-8
+    username: root
+    password: root
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000 #连接超时 毫秒
+    lettuce:
+      pool:
+        min-idle: 0
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+logging:
+  level:
+    com.oktfolio.tero.dao.mapper: DEBUG
+    org.springframework.security: DEBUG
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  notEmpty: true
+  style: camelhump

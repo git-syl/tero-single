@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -32,6 +33,8 @@
         <tk-mapper-starter.version>2.1.5</tk-mapper-starter.version>
         <pagehelper-starter.version>1.2.13</pagehelper-starter.version>
         <easyexcel.version>2.2.3</easyexcel.version>
+        <commons-pool2.version>2.8.0</commons-pool2.version>
+        <nacos-config-spring-boot.version>0.2.7</nacos-config-spring-boot.version>
     </properties>
 
     <dependencies>
@@ -66,6 +69,13 @@
             <version>${mybatis-starter.version}</version>
         </dependency>
 
+        <!-- Commons Pool2, Lettuce 依赖 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+        </dependency>
+
         <!-- Spring Session -->
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -76,6 +86,11 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <!-- Mysql Connector -->
@@ -155,9 +170,11 @@
             <version>${easyexcel.version}</version>
         </dependency>
 
+        <!-- Nacos -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>nacos-config-spring-boot-starter</artifactId>
+            <version>${nacos-config-spring-boot.version}</version>
         </dependency>
 
         <dependency>
