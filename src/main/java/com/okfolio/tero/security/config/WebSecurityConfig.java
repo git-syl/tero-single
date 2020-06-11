@@ -1,6 +1,9 @@
 package com.okfolio.tero.security.config;
 
+import com.okfolio.tero.security.authentication.EmailAuthenticationProvider;
+import com.okfolio.tero.security.authentication.PhoneAuthenticationProvider;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.okfolio.tero.security.service.ITeroUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -26,7 +28,7 @@ import org.springframework.web.cors.CorsUtils;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private ITeroUserDetailsService userDetailsService;
 
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
@@ -72,9 +74,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler);
     }
 
-    @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         var provider = new DaoAuthenticationProvider();
+        // passwordEncoder
+        provider.setPasswordEncoder(passwordEncoder);
+        // username UserDetailsService
+        provider.setUserDetailsService(userDetailsService);
+        // setHideUserNotFoundExceptions
+        provider.setHideUserNotFoundExceptions(false);
+        return provider;
+    }
+
+    public EmailAuthenticationProvider emailAuthenticationProvider() {
+        var provider = new EmailAuthenticationProvider();
+        // passwordEncoder
+        provider.setPasswordEncoder(passwordEncoder);
+        // username UserDetailsService
+        provider.setUserDetailsService(userDetailsService);
+        // setHideUserNotFoundExceptions
+        provider.setHideUserNotFoundExceptions(false);
+        return provider;
+    }
+
+    public PhoneAuthenticationProvider phoneAuthenticationProvider() {
+        var provider = new PhoneAuthenticationProvider();
         // passwordEncoder
         provider.setPasswordEncoder(passwordEncoder);
         // username UserDetailsService
@@ -87,6 +110,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(phoneAuthenticationProvider());
+        auth.authenticationProvider(emailAuthenticationProvider());
     }
 
     @Bean
