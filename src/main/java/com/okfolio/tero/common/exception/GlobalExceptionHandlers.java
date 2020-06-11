@@ -2,7 +2,6 @@ package com.okfolio.tero.common.exception;
 
 import com.okfolio.tero.common.ResultEntity;
 import com.okfolio.tero.common.enums.ResultCodeEnum;
-import com.okfolio.tero.common.enums.UserResultCodeEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

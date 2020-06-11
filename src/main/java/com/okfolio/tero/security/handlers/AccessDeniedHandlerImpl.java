@@ -3,14 +3,12 @@ package com.okfolio.tero.security.handlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okfolio.tero.common.ResultEntity;
 import com.okfolio.tero.common.enums.ResultCodeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
