@@ -1,8 +1,11 @@
 package com.okfolio.tero.security.config;
 
+import com.okfolio.tero.security.authentication.EmailAuthenticationToken;
 import com.okfolio.tero.security.authentication.provider.EmailAuthenticationProvider;
 import com.okfolio.tero.security.authentication.provider.PhoneAuthenticationProvider;
+import com.okfolio.tero.security.filter.EmailAuthenticationFilter;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.okfolio.tero.security.filter.PhoneAuthenticationFilter;
 import com.okfolio.tero.security.service.ITeroUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
@@ -77,6 +81,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 jsonUsernamePasswordAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class);
 
+        http.addFilterAfter(
+                emailAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterAfter(
+                phoneAuthenticationFilter() ,
+                EmailAuthenticationFilter.class);
+
         http.formLogin()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler);
@@ -125,11 +137,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(emailAuthenticationProvider());
     }
 
-    @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() throws Exception {
         var filter = new JsonUsernamePasswordAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setFilterProcessesUrl("/login");
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        return filter;
+    }
+
+    public EmailAuthenticationFilter emailAuthenticationFilter() throws Exception {
+        var filter = new EmailAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setFilterProcessesUrl("/login/email");
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        return filter;
+    }
+
+    public PhoneAuthenticationFilter phoneAuthenticationFilter() throws Exception {
+        var filter = new PhoneAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setFilterProcessesUrl("/login/phone");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
         return filter;

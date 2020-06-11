@@ -68,13 +68,13 @@ public class PhoneAuthenticationProvider extends AbstractPhoneUserDetailsAuthent
 
         String presentedPassword = authentication.getCredentials().toString();
 
-        if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-            logger.debug("Authentication failed: password does not match stored value");
-
-            throw new BadCredentialsException(messages.getMessage(
-                    "AbstractPhoneUserDetailsAuthenticationProvider.badCredentials",
-                    "Bad credentials"));
-        }
+        // if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+        //     logger.debug("Authentication failed: password does not match stored value");
+        //
+        //     throw new BadCredentialsException(messages.getMessage(
+        //             "AbstractPhoneUserDetailsAuthenticationProvider.badCredentials",
+        //             "Bad credentials"));
+        // }
     }
     // ========================================================================================================
 
