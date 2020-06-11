@@ -1,14 +1,14 @@
-spring:
-  application:
-    name: tero
-nacos:
-  config:
-    auto-refresh: true
-    namespace: 761b27d6-f5b2-4d62-8499-5ceb76149a91
-    server-addr: 127.0.0.1:8848
-    username: nacos
-    password: nacos
-    group: DEFAULT_GROUP
-    data-id: tero.yaml
-    bootstrap:
-      enable: true
+#spring:
+#  application:
+#    name: tero
+#nacos:
+#  config:
+#    auto-refresh: true
+#    namespace: 761b27d6-f5b2-4d62-8499-5ceb76149a91
+#    server-addr: 127.0.0.1:8848
+#    username: nacos
+#    password: nacos
+#    group: DEFAULT_GROUP
+#    data-id: tero.yaml
+#    bootstrap:
+#      enable: true
