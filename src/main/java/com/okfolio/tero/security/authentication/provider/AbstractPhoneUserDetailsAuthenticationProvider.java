@@ -1,5 +1,6 @@
-package com.okfolio.tero.security.authentication;
+package com.okfolio.tero.security.authentication.provider;
 
+import com.okfolio.tero.security.authentication.PhoneAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -12,7 +13,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserCache;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.util.Assert;
 
@@ -20,7 +24,7 @@ import org.springframework.util.Assert;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/02/27
  */
-public abstract class AbstractEmailUserDetailsAuthenticationProvider
+public abstract class AbstractPhoneUserDetailsAuthenticationProvider 
         implements AuthenticationProvider, InitializingBean, MessageSourceAware {
 
     protected final Log logger = LogFactory.getLog(getClass());
@@ -32,8 +36,8 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
     private UserCache userCache = new NullUserCache();
     private boolean forcePrincipalAsString = false;
     protected boolean hideUserNotFoundExceptions = true;
-    private UserDetailsChecker preAuthenticationChecks = new DefaultPreAuthenticationChecks();
-    private UserDetailsChecker postAuthenticationChecks = new DefaultPostAuthenticationChecks();
+    private UserDetailsChecker preAuthenticationChecks = new AbstractPhoneUserDetailsAuthenticationProvider.DefaultPreAuthenticationChecks();
+    private UserDetailsChecker postAuthenticationChecks = new AbstractPhoneUserDetailsAuthenticationProvider.DefaultPostAuthenticationChecks();
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     // ~ Methods
@@ -49,7 +53,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
      * method.
      *
      * @param userDetails as retrieved from the
-     * {@link #retrieveUser(String, EmailAuthenticationToken)} or
+     * {@link #retrieveUser(String, PhoneAuthenticationToken)} or
      * <code>UserCache</code>
      * @param authentication the current request that needs to be authenticated
      *
@@ -58,7 +62,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
      * <code>AuthenticationServiceException</code>)
      */
     protected abstract void additionalAuthenticationChecks(UserDetails userDetails,
-                                                           EmailAuthenticationToken authentication)
+                                                           PhoneAuthenticationToken authentication)
             throws AuthenticationException;
 
     @Override
@@ -71,10 +75,10 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
-        Assert.isInstanceOf(EmailAuthenticationToken.class, authentication,
+        Assert.isInstanceOf(PhoneAuthenticationToken.class, authentication,
                 () -> messages.getMessage(
-                        "AbstractEmailUserDetailsAuthenticationProvider.onlySupports",
-                        "Only EmailAuthenticationToken is supported"));
+                        "AbstractPhoneUserDetailsAuthenticationProvider.onlySupports",
+                        "Only PhoneAuthenticationToken is supported"));
 
         // Determine username
         String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED"
@@ -88,7 +92,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
 
             try {
                 user = retrieveUser(username,
-                        (EmailAuthenticationToken) authentication);
+                        (PhoneAuthenticationToken) authentication);
             }
             catch (UsernameNotFoundException notFound) {
                 logger.debug("User '" + username + "' not found");
@@ -110,7 +114,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
         try {
             preAuthenticationChecks.check(user);
             additionalAuthenticationChecks(user,
-                    (EmailAuthenticationToken) authentication);
+                    (PhoneAuthenticationToken) authentication);
         }
         catch (AuthenticationException exception) {
             if (cacheWasUsed) {
@@ -118,10 +122,10 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
                 // we're using latest data (i.e. not from the cache)
                 cacheWasUsed = false;
                 user = retrieveUser(username,
-                        (EmailAuthenticationToken) authentication);
+                        (PhoneAuthenticationToken) authentication);
                 preAuthenticationChecks.check(user);
                 additionalAuthenticationChecks(user,
-                        (EmailAuthenticationToken) authentication);
+                        (PhoneAuthenticationToken) authentication);
             }
             else {
                 throw exception;
@@ -206,14 +210,14 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
      * want to ensure that this method is the only method that is capable of
      * authenticating a request, as no <code>UserDetails</code> will ever be cached) or
      * ensure subclasses implement
-     * {@link #additionalAuthenticationChecks(UserDetails, EmailAuthenticationToken)}
+     * {@link #additionalAuthenticationChecks(UserDetails, PhoneAuthenticationToken)}
      * to compare the credentials of a cached <code>UserDetails</code> with subsequent
      * authentication requests.
      * </p>
      * <p>
      * Most of the time subclasses will not perform credentials inspection in this method,
      * instead performing it in
-     * {@link #additionalAuthenticationChecks(UserDetails, EmailAuthenticationToken)}
+     * {@link #additionalAuthenticationChecks(UserDetails, PhoneAuthenticationToken)}
      * so that code related to credentials validation need not be duplicated across two
      * methods.
      * </p>
@@ -231,7 +235,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
      * <code>UsernameNotFoundException</code>)
      */
     protected abstract UserDetails retrieveUser(String username,
-                                                EmailAuthenticationToken authentication)
+                                                PhoneAuthenticationToken authentication)
             throws AuthenticationException;
 
     public void setForcePrincipalAsString(boolean forcePrincipalAsString) {
@@ -302,7 +306,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
                 logger.debug("User account is locked");
 
                 throw new LockedException(messages.getMessage(
-                        "AbstractEmailUserDetailsAuthenticationProvider.locked",
+                        "AbstractPhoneUserDetailsAuthenticationProvider.locked",
                         "User account is locked"));
             }
 
@@ -310,7 +314,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
                 logger.debug("User account is disabled");
 
                 throw new DisabledException(messages.getMessage(
-                        "AbstractEmailUserDetailsAuthenticationProvider.disabled",
+                        "AbstractPhoneUserDetailsAuthenticationProvider.disabled",
                         "User is disabled"));
             }
 
@@ -318,7 +322,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
                 logger.debug("User account is expired");
 
                 throw new AccountExpiredException(messages.getMessage(
-                        "AbstractEmailUserDetailsAuthenticationProvider.expired",
+                        "AbstractPhoneUserDetailsAuthenticationProvider.expired",
                         "User account has expired"));
             }
         }
@@ -331,7 +335,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
                 logger.debug("User account credentials have expired");
 
                 throw new CredentialsExpiredException(messages.getMessage(
-                        "AbstractEmailUserDetailsAuthenticationProvider.credentialsExpired",
+                        "AbstractPhoneUserDetailsAuthenticationProvider.credentialsExpired",
                         "User credentials have expired"));
             }
         }

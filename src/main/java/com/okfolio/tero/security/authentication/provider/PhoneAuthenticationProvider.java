@@ -1,5 +1,6 @@
-package com.okfolio.tero.security.authentication;
+package com.okfolio.tero.security.authentication.provider;
 
+import com.okfolio.tero.security.authentication.PhoneAuthenticationToken;
 import com.okfolio.tero.security.service.ITeroUserDetailsService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -16,7 +17,7 @@ import org.springframework.util.Assert;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/12
  */
-public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthenticationProvider {
+public class PhoneAuthenticationProvider extends AbstractPhoneUserDetailsAuthenticationProvider {
 
     // ~ Static fields/initializers
     // =====================================================================================
@@ -46,7 +47,7 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
 
     private UserDetailsPasswordService userDetailsPasswordService;
 
-    public EmailAuthenticationProvider() {
+    public PhoneAuthenticationProvider() {
         setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
@@ -55,7 +56,7 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
     @Override
     @SuppressWarnings("deprecation")
     protected void additionalAuthenticationChecks(UserDetails userDetails,
-                                                  EmailAuthenticationToken authentication)
+                                                  PhoneAuthenticationToken authentication)
             throws AuthenticationException {
         if (authentication.getCredentials() == null) {
             logger.debug("Authentication failed: no credentials provided");
@@ -84,11 +85,11 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
 
     @Override
     protected final UserDetails retrieveUser(String username,
-                                             EmailAuthenticationToken authentication)
+                                             PhoneAuthenticationToken authentication)
             throws AuthenticationException {
         prepareTimingAttackProtection();
         try {
-            UserDetails loadedUser = this.getUserDetailsService().loadUserByEmail(username);
+            UserDetails loadedUser = this.getUserDetailsService().loadUserByPhone(username);
             if (loadedUser == null) {
                 throw new InternalAuthenticationServiceException(
                         "UserDetailsService returned null, which is an interface contract violation");
@@ -127,7 +128,7 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
         }
     }
 
-    private void mitigateAgainstTimingAttack(EmailAuthenticationToken authentication) {
+    private void mitigateAgainstTimingAttack(PhoneAuthenticationToken authentication) {
         if (authentication.getCredentials() != null) {
             String presentedPassword = authentication.getCredentials().toString();
             this.passwordEncoder.matches(presentedPassword, this.userNotFoundEncodedPassword);

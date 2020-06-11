@@ -1,7 +1,7 @@
 package com.okfolio.tero.security.config;
 
-import com.okfolio.tero.security.authentication.EmailAuthenticationProvider;
-import com.okfolio.tero.security.authentication.PhoneAuthenticationProvider;
+import com.okfolio.tero.security.authentication.provider.EmailAuthenticationProvider;
+import com.okfolio.tero.security.authentication.provider.PhoneAuthenticationProvider;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.okfolio.tero.security.service.ITeroUserDetailsService;
 import org.springframework.context.annotation.Bean;
