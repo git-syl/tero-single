@@ -23,6 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/11
+ */
 @Component
 public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
