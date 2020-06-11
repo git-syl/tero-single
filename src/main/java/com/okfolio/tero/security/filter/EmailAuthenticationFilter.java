@@ -6,12 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +23,8 @@ public class EmailAuthenticationFilter extends AbstractAuthenticationProcessingF
     private final static Logger logger = LoggerFactory.getLogger(EmailAuthenticationFilter.class);
     public static final String SPRING_SECURITY_FORM_EMAIL_KEY = "email";
     public static final String SPRING_SECURITY_FORM_VERIFICATION_CODE_KEY = "code";
-    private String emailParameter = "email";
-    private String codeParameter = "code";
+    private final String emailParameter = "email";
+    private final String codeParameter = "code";
     private boolean postOnly = true;
 
     public EmailAuthenticationFilter() {

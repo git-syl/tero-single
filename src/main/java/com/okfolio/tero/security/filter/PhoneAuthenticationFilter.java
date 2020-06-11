@@ -1,6 +1,5 @@
 package com.okfolio.tero.security.filter;
 
-import com.okfolio.tero.security.authentication.EmailAuthenticationToken;
 import com.okfolio.tero.security.authentication.PhoneAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author oktfolio oktfolio@gmail.com
@@ -27,8 +23,8 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
     private final static Logger logger = LoggerFactory.getLogger(PhoneAuthenticationFilter.class);
     public static final String SPRING_SECURITY_FORM_PHONE_KEY = "phone";
     public static final String SPRING_SECURITY_FORM_CODE_KEY = "code";
-    private String phoneParameter = "phone";
-    private String codeParameter = "code";
+    private final String phoneParameter = "phone";
+    private final String codeParameter = "code";
     private boolean postOnly = true;
 
     public PhoneAuthenticationFilter() {
