@@ -4,6 +4,7 @@ import com.okfolio.tero.security.authentication.provider.EmailAuthenticationProv
 import com.okfolio.tero.security.authentication.provider.PhoneAuthenticationProvider;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.okfolio.tero.security.service.ITeroUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -26,26 +28,24 @@ import org.springframework.web.cors.CorsUtils;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final ITeroUserDetailsService userDetailsService;
-
-    private final AccessDeniedHandler accessDeniedHandler;
-
-    private final AuthenticationFailureHandler authenticationFailureHandler;
-
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
-
     private final PasswordEncoder passwordEncoder;
+    private final ITeroUserDetailsService userDetailsService;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     public WebSecurityConfig(ITeroUserDetailsService userDetailsService,
                              AccessDeniedHandler accessDeniedHandler,
                              AuthenticationFailureHandler authenticationFailureHandler,
                              AuthenticationSuccessHandler authenticationSuccessHandler,
-                             PasswordEncoder passwordEncoder) {
+                             PasswordEncoder passwordEncoder, AuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Override
@@ -56,7 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.userDetailsService(userDetailsService);
 
         // grant all preflight request
-        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+        http.authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest)
+                .permitAll();
 
 //        http.authorizeRequests()
 //                .anyRequest()
@@ -78,6 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler);
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint);
     }
 
     public DaoAuthenticationProvider daoAuthenticationProvider() {
