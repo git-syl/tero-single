@@ -46,7 +46,8 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
     private ObjectMapper objectMapper;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response)
             throws AuthenticationException {
 
         logger.info("JsonUsernamePasswordAuthenticationFilter attemptAuthentication");
