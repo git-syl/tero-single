@@ -1,26 +1,120 @@
 package com.okfolio.tero.security.authentication;
 
+import com.okfolio.tero.security.service.ITeroUserDetailsService;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsPasswordService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.Assert;
 
 /**
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/12
  */
-public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthenticationProvider{
-    @Override
-    protected void additionalAuthenticationChecks(UserDetails var1, EmailAuthenticationToken var2) throws AuthenticationException {
+public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthenticationProvider {
 
+    private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
+    private PasswordEncoder passwordEncoder;
+    private volatile String userNotFoundEncodedPassword;
+    private ITeroUserDetailsService userDetailsService;
+    private UserDetailsPasswordService userDetailsPasswordService;
+
+    public EmailAuthenticationProvider() {
+        this.setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+    }
+
+    @Override
+    protected void additionalAuthenticationChecks(UserDetails userDetails, EmailAuthenticationToken authentication) throws AuthenticationException {
+        if (authentication.getCredentials() == null) {
+            this.logger.debug("Authentication failed: no credentials provided");
+            throw new BadCredentialsException(this.messages.getMessage("AbstractEmailUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+        } else {
+            String presentedPassword = authentication.getCredentials().toString();
+            if (!this.passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+                this.logger.debug("Authentication failed: password does not match stored value");
+                throw new BadCredentialsException(this.messages.getMessage("AbstractEmailUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+            }
+        }
+    }
+
+    @Override
+    protected void doAfterPropertiesSet() {
+        Assert.notNull(this.userDetailsService, "A UserDetailsService must be set");
+    }
+
+    @Override
+    protected final UserDetails retrieveUser(String phone, EmailAuthenticationToken authentication) throws AuthenticationException {
+        this.prepareTimingAttackProtection();
+
+        try {
+            UserDetails loadedUser = this.getUserDetailsService().loadUserByPhone(phone);
+            if (loadedUser == null) {
+                throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
+            } else {
+                return loadedUser;
+            }
+            //TODO
+        } catch (UsernameNotFoundException var4) {
+            this.mitigateAgainstTimingAttack(authentication);
+            throw var4;
+        } catch (InternalAuthenticationServiceException var5) {
+            throw var5;
+        } catch (Exception var6) {
+            throw new InternalAuthenticationServiceException(var6.getMessage(), var6);
+        }
     }
 
     @Override
     protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
-        return null;
+        boolean upgradeEncoding = this.userDetailsPasswordService != null && this.passwordEncoder.upgradeEncoding(user.getPassword());
+        if (upgradeEncoding) {
+            String presentedPassword = authentication.getCredentials().toString();
+            String newPassword = this.passwordEncoder.encode(presentedPassword);
+            user = this.userDetailsPasswordService.updatePassword(user, newPassword);
+        }
+
+        return super.createSuccessAuthentication(principal, authentication, user);
     }
 
-    @Override
-    protected UserDetails retrieveUser(String var1, EmailAuthenticationToken var2) throws AuthenticationException {
-        return null;
+    private void prepareTimingAttackProtection() {
+        if (this.userNotFoundEncodedPassword == null) {
+            this.userNotFoundEncodedPassword = this.passwordEncoder.encode("userNotFoundPassword");
+        }
+
+    }
+
+    private void mitigateAgainstTimingAttack(EmailAuthenticationToken authentication) {
+        if (authentication.getCredentials() != null) {
+            String presentedPassword = authentication.getCredentials().toString();
+            this.passwordEncoder.matches(presentedPassword, this.userNotFoundEncodedPassword);
+        }
+
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
+        this.passwordEncoder = passwordEncoder;
+        this.userNotFoundEncodedPassword = null;
+    }
+
+    protected PasswordEncoder getPasswordEncoder() {
+        return this.passwordEncoder;
+    }
+
+    public void setUserDetailsService(ITeroUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    protected ITeroUserDetailsService getUserDetailsService() {
+        return this.userDetailsService;
+    }
+
+    public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
+        this.userDetailsPasswordService = userDetailsPasswordService;
     }
 }
