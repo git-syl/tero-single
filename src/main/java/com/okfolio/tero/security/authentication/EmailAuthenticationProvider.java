@@ -18,29 +18,64 @@ import org.springframework.util.Assert;
  */
 public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthenticationProvider {
 
+    // ~ Static fields/initializers
+    // =====================================================================================
+
+    /**
+     * The plaintext password used to perform
+     * PasswordEncoder#matches(CharSequence, String)}  on when the user is
+     * not found to avoid SEC-2056.
+     */
     private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
+
+    // ~ Instance fields
+    // ================================================================================================
+
     private PasswordEncoder passwordEncoder;
+
+    /**
+     * The password used to perform
+     * {@link PasswordEncoder#matches(CharSequence, String)} on when the user is
+     * not found to avoid SEC-2056. This is necessary, because some
+     * {@link PasswordEncoder} implementations will short circuit if the password is not
+     * in a valid format.
+     */
     private volatile String userNotFoundEncodedPassword;
+
     private ITeroUserDetailsService userDetailsService;
+
     private UserDetailsPasswordService userDetailsPasswordService;
 
     public EmailAuthenticationProvider() {
-        this.setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+        setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
+    // ~ Methods
+
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, EmailAuthenticationToken authentication) throws AuthenticationException {
+    @SuppressWarnings("deprecation")
+    protected void additionalAuthenticationChecks(UserDetails userDetails,
+                                                  EmailAuthenticationToken authentication)
+            throws AuthenticationException {
         if (authentication.getCredentials() == null) {
-            this.logger.debug("Authentication failed: no credentials provided");
-            throw new BadCredentialsException(this.messages.getMessage("AbstractEmailUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
-        } else {
-            String presentedPassword = authentication.getCredentials().toString();
-            if (!this.passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-                this.logger.debug("Authentication failed: password does not match stored value");
-                throw new BadCredentialsException(this.messages.getMessage("AbstractEmailUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
-            }
+            logger.debug("Authentication failed: no credentials provided");
+
+            throw new BadCredentialsException(messages.getMessage(
+                    "AbstractPhoneUserDetailsAuthenticationProvider.badCredentials",
+                    "Bad credentials"));
+        }
+
+        String presentedPassword = authentication.getCredentials().toString();
+
+        if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+            logger.debug("Authentication failed: password does not match stored value");
+
+            throw new BadCredentialsException(messages.getMessage(
+                    "AbstractPhoneUserDetailsAuthenticationProvider.badCredentials",
+                    "Bad credentials"));
         }
     }
+    // ========================================================================================================
 
     @Override
     protected void doAfterPropertiesSet() {
@@ -48,44 +83,48 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
     }
 
     @Override
-    protected final UserDetails retrieveUser(String phone, EmailAuthenticationToken authentication) throws AuthenticationException {
-        this.prepareTimingAttackProtection();
-
+    protected final UserDetails retrieveUser(String username,
+                                             EmailAuthenticationToken authentication)
+            throws AuthenticationException {
+        prepareTimingAttackProtection();
         try {
-            UserDetails loadedUser = this.getUserDetailsService().loadUserByPhone(phone);
+            UserDetails loadedUser = this.getUserDetailsService().loadUserByEmail(username);
             if (loadedUser == null) {
-                throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
-            } else {
-                return loadedUser;
+                throw new InternalAuthenticationServiceException(
+                        "UserDetailsService returned null, which is an interface contract violation");
             }
-            //TODO
-        } catch (UsernameNotFoundException var4) {
-            this.mitigateAgainstTimingAttack(authentication);
-            throw var4;
-        } catch (InternalAuthenticationServiceException var5) {
-            throw var5;
-        } catch (Exception var6) {
-            throw new InternalAuthenticationServiceException(var6.getMessage(), var6);
+            return loadedUser;
+        }
+        //TODO
+        catch (UsernameNotFoundException ex) {
+            mitigateAgainstTimingAttack(authentication);
+            throw ex;
+        }
+        catch (InternalAuthenticationServiceException ex) {
+            throw ex;
+        }
+        catch (Exception ex) {
+            throw new InternalAuthenticationServiceException(ex.getMessage(), ex);
         }
     }
 
     @Override
-    protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
-        boolean upgradeEncoding = this.userDetailsPasswordService != null && this.passwordEncoder.upgradeEncoding(user.getPassword());
+    protected Authentication createSuccessAuthentication(Object principal,
+                                                         Authentication authentication, UserDetails user) {
+        boolean upgradeEncoding = this.userDetailsPasswordService != null
+                && this.passwordEncoder.upgradeEncoding(user.getPassword());
         if (upgradeEncoding) {
             String presentedPassword = authentication.getCredentials().toString();
             String newPassword = this.passwordEncoder.encode(presentedPassword);
             user = this.userDetailsPasswordService.updatePassword(user, newPassword);
         }
-
         return super.createSuccessAuthentication(principal, authentication, user);
     }
 
     private void prepareTimingAttackProtection() {
         if (this.userNotFoundEncodedPassword == null) {
-            this.userNotFoundEncodedPassword = this.passwordEncoder.encode("userNotFoundPassword");
+            this.userNotFoundEncodedPassword = this.passwordEncoder.encode(USER_NOT_FOUND_PASSWORD);
         }
-
     }
 
     private void mitigateAgainstTimingAttack(EmailAuthenticationToken authentication) {
@@ -93,9 +132,15 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
             String presentedPassword = authentication.getCredentials().toString();
             this.passwordEncoder.matches(presentedPassword, this.userNotFoundEncodedPassword);
         }
-
     }
 
+    /**
+     * Sets the PasswordEncoder instance to be used to encode and validate passwords. If
+     * not set, the password will be compared using {@link PasswordEncoderFactories#createDelegatingPasswordEncoder()}
+     *
+     * @param passwordEncoder must be an instance of one of the {@code PasswordEncoder}
+     * types.
+     */
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
         this.passwordEncoder = passwordEncoder;
@@ -103,7 +148,7 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
     }
 
     protected PasswordEncoder getPasswordEncoder() {
-        return this.passwordEncoder;
+        return passwordEncoder;
     }
 
     public void setUserDetailsService(ITeroUserDetailsService userDetailsService) {
@@ -111,10 +156,11 @@ public class EmailAuthenticationProvider extends AbstractEmailUserDetailsAuthent
     }
 
     protected ITeroUserDetailsService getUserDetailsService() {
-        return this.userDetailsService;
+        return userDetailsService;
     }
 
-    public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
+    public void setUserDetailsPasswordService(
+            UserDetailsPasswordService userDetailsPasswordService) {
         this.userDetailsPasswordService = userDetailsPasswordService;
     }
 }
