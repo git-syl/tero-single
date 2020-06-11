@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,19 +37,15 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 
     private boolean postOnly = true;
 
-    private final ObjectMapper objectMapper;
-
     // ~ Constructors
     // ===================================================================================================
 
-    public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
+    public JsonUsernamePasswordAuthenticationFilter() {
         super();
-        this.objectMapper = objectMapper;
     }
 
-    public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper, AuthenticationManager authenticationManager) {
+    public JsonUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
         super.setAuthenticationManager(authenticationManager);
-        this.objectMapper = objectMapper;
     }
 
     // ~ Methods
@@ -69,7 +64,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
             UsernamePasswordAuthenticationToken authRequest =
                     new UsernamePasswordAuthenticationToken("", "");
             try (InputStream inputStream = request.getInputStream()) {
-                JsonParser parser = objectMapper.createParser(inputStream);
+                JsonParser parser = new ObjectMapper().createParser(inputStream);
                 UsernamePassword usernamePassword = parser.readValueAs(UsernamePassword.class);
                 if (usernamePassword != null && StringUtils.isNoneEmpty(usernamePassword.getUsername())) {
                     authRequest = new UsernamePasswordAuthenticationToken(

@@ -4,7 +4,6 @@ import com.okfolio.tero.security.authentication.EmailAuthenticationProvider;
 import com.okfolio.tero.security.authentication.PhoneAuthenticationProvider;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.okfolio.tero.security.service.ITeroUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,20 +26,27 @@ import org.springframework.web.cors.CorsUtils;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private ITeroUserDetailsService userDetailsService;
+    private final ITeroUserDetailsService userDetailsService;
 
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
 
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public WebSecurityConfig(ITeroUserDetailsService userDetailsService,
+                             AccessDeniedHandler accessDeniedHandler,
+                             AuthenticationFailureHandler authenticationFailureHandler,
+                             AuthenticationSuccessHandler authenticationSuccessHandler,
+                             PasswordEncoder passwordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -110,8 +116,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
-        auth.authenticationProvider(phoneAuthenticationProvider());
-        auth.authenticationProvider(emailAuthenticationProvider());
+        // auth.authenticationProvider(phoneAuthenticationProvider());
+        // auth.authenticationProvider(emailAuthenticationProvider());
     }
 
     @Bean

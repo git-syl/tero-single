@@ -1,6 +1,6 @@
 package com.okfolio.tero.security.handlers;
 
-import com.okfolio.tero.security.model.TeroUserDetails;
+import com.okfolio.tero.security.userdetails.TeroUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
