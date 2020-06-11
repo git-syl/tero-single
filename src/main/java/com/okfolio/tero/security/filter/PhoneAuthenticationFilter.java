@@ -42,11 +42,9 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
             if (phone == null) {
                 phone = "";
             }
-
             if (code == null) {
                 code = "";
             }
-
             PhoneAuthenticationToken authRequest = new PhoneAuthenticationToken(phone, code);
             this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);

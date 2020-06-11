@@ -42,11 +42,9 @@ public class EmailAuthenticationFilter extends AbstractAuthenticationProcessingF
             if (email == null) {
                 email = "";
             }
-
             if (code == null) {
                 code = "";
             }
-
             EmailAuthenticationToken authRequest = new EmailAuthenticationToken(email, code);
             this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
