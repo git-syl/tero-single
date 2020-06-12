@@ -3,6 +3,7 @@ package com.okfolio.tero.common;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.okfolio.tero.common.enums.ResultCode;
+import com.okfolio.tero.common.enums.ResultCodeEnum;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -172,6 +173,15 @@ public class ResultEntity {
                 .status(HttpStatus.UNAUTHORIZED)
                 .code(resultCode.value())
                 .message(resultCode.message())
+                .datetime(LocalDateTime.now())
+                .build();
+    }
+
+    public static ResultEntity unauthorized(String message) {
+        return ResultEntity.builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .code(ResultCodeEnum.ERROR.value())
+                .message(message)
                 .datetime(LocalDateTime.now())
                 .build();
     }
