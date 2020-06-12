@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/06/08
  */
 @Component
-@ConfigurationProperties(prefix = "kite.snowflake", ignoreInvalidFields = false, ignoreUnknownFields = true)
+@ConfigurationProperties(prefix = "tero.snowflake", ignoreInvalidFields = false, ignoreUnknownFields = true)
 public class TeroSnowFlakeConfig {
 
     private Long centerId;

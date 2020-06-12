@@ -6,15 +6,12 @@ import io.minio.errors.InvalidPortException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/12
  */
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "tero.minio", ignoreInvalidFields = false, ignoreUnknownFields = true)
 public class MinioConfig {
 

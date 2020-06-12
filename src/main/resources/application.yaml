@@ -22,8 +22,6 @@ logging:
   level:
     com.oktfolio.tero.dao.mapper: DEBUG
     org.springframework.security: DEBUG
-
-
 tero:
   minio:
     endpoint: http://127.0.0.1:19000
@@ -34,6 +32,13 @@ tero:
       endpoint: aliyun
       access-key-id: aliyun
       secret-access-key: aliyun
+  snowflake:
+    center-id: 1
+    machine-id: 1
+  security:
+    ignore-urls:
+      - /test
+      - /test1
 mapper:
   mappers:
     - tk.mybatis.mapper.common.Mapper
