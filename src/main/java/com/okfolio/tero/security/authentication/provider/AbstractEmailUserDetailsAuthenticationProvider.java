@@ -266,7 +266,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return (UsernamePasswordAuthenticationToken.class
+        return (EmailAuthenticationToken.class
                 .isAssignableFrom(authentication));
     }
 
