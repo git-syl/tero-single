@@ -32,7 +32,7 @@ public class UsernamePassword {
 
     @Override
     public String toString() {
-        return "UsernamePasswordModel{" +
+        return "UsernamePassword{" +
                 "username='" + username + '\'' +
                 ", password='" + null + '\'' +
                 '}';
