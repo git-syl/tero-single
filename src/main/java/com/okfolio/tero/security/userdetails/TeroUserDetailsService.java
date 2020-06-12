@@ -1,7 +1,6 @@
-package com.okfolio.tero.security.service;
+package com.okfolio.tero.security.userdetails;
 
 import com.google.common.collect.Sets;
-import com.okfolio.tero.security.userdetails.TeroUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;

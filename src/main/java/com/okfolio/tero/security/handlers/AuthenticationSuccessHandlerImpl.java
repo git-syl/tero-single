@@ -1,6 +1,8 @@
 package com.okfolio.tero.security.handlers;
 
+import com.okfolio.tero.common.ResultEntity;
 import com.okfolio.tero.security.userdetails.TeroUserDetails;
+import com.okfolio.tero.utils.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,10 +31,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
                                         HttpServletResponse response,
                                         FilterChain chain,
                                         Authentication authentication) throws IOException, ServletException {
-        TeroUserDetails userDetails = (TeroUserDetails) authentication.getPrincipal();
-        logger.info("onAuthenticationSuccess username: {}", userDetails.getUsername());
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         chain.doFilter(request, response);
     }
 
@@ -42,7 +40,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
                                         Authentication authentication) throws IOException, ServletException {
         TeroUserDetails userDetails = (TeroUserDetails) authentication.getPrincipal();
         logger.info("onAuthenticationSuccess username: {}", userDetails.getUsername());
-        httpServletResponse.setStatus(HttpStatus.OK.value());
-        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        Response.json(httpServletResponse, HttpStatus.OK);
     }
 }

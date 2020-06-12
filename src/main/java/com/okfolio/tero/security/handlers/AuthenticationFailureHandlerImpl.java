@@ -3,6 +3,7 @@ package com.okfolio.tero.security.handlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okfolio.tero.common.ResultEntity;
 import com.okfolio.tero.common.enums.UserResultCodeEnum;
+import com.okfolio.tero.utils.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,89 +30,45 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
     private final static Logger logger = LoggerFactory.getLogger(AuthenticationSuccessHandlerImpl.class);
 
-    private final ObjectMapper objectMapper;
-
-    public AuthenticationFailureHandlerImpl(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        PrintWriter writer = response.getWriter();
-
         if (exception instanceof AuthenticationServiceException) {
             logger.info("AuthenticationServiceException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(exception.getMessage())));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(exception.getMessage()));
+
         } else if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             logger.info("UsernameNotFoundException || BadCredentialsException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD));
+
         } else if (exception instanceof AccountExpiredException) {
             logger.info("AccountExpiredException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.USER_EXPIRED)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_EXPIRED));
+
         } else if (exception instanceof LockedException) {
             logger.info("LockedException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.USER_LOCKED)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_LOCKED));
+
         } else if (exception instanceof CredentialsExpiredException) {
             logger.info("CredentialsExpiredException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.CREDENTIALS_EXPIRED)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.CREDENTIALS_EXPIRED));
+
         } else if (exception instanceof DisabledException) {
             logger.info("DisabledException");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.USER_DISABLED)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_DISABLED));
+
         } else {
             logger.info("onAuthenticationFailure");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            writer.write(
-                    objectMapper.writeValueAsString(
-                            ResultEntity.unauthorized(UserResultCodeEnum.FAILED_LOGIN)));
-            writer.flush();
-            writer.close();
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.FAILED_LOGIN));
         }
     }
 }

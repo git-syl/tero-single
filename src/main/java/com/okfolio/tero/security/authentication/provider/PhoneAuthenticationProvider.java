@@ -1,7 +1,7 @@
 package com.okfolio.tero.security.authentication.provider;
 
 import com.okfolio.tero.security.authentication.PhoneAuthenticationToken;
-import com.okfolio.tero.security.service.ITeroUserDetailsService;
+import com.okfolio.tero.security.userdetails.ITeroUserDetailsService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;

@@ -1,14 +1,11 @@
 package com.okfolio.tero.security.config;
 
-import com.okfolio.tero.security.authentication.EmailAuthenticationToken;
 import com.okfolio.tero.security.authentication.provider.EmailAuthenticationProvider;
 import com.okfolio.tero.security.authentication.provider.PhoneAuthenticationProvider;
 import com.okfolio.tero.security.filter.EmailAuthenticationFilter;
 import com.okfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.okfolio.tero.security.filter.PhoneAuthenticationFilter;
-import com.okfolio.tero.security.service.ITeroUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import com.okfolio.tero.security.userdetails.ITeroUserDetailsService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;

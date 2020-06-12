@@ -1,4 +1,4 @@
-package com.okfolio.tero.security.service;
+package com.okfolio.tero.security.userdetails;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
