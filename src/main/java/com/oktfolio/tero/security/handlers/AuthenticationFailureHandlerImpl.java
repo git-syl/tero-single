@@ -3,6 +3,7 @@ package com.oktfolio.tero.security.handlers;
 import com.oktfolio.tero.common.ResultEntity;
 import com.oktfolio.tero.common.enums.UserResultCodeEnum;
 import com.oktfolio.tero.security.exception.ContentTypeNullException;
+import com.oktfolio.tero.security.exception.InvalidCodeException;
 import com.oktfolio.tero.security.exception.MethodNotSupportedException;
 import com.oktfolio.tero.utils.Response;
 import org.slf4j.Logger;
@@ -38,6 +39,11 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
             Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD));
 
+        } else if (exception instanceof InvalidCodeException) {
+            logger.info("InvalidCodeException");
+            Response.json(response, HttpStatus.UNAUTHORIZED,
+                    ResultEntity.unauthorized(UserResultCodeEnum.INVALID_VERIFICATION_CODE));
+
         } else if (exception instanceof AccountExpiredException) {
             logger.info("AccountExpiredException");
             Response.json(response, HttpStatus.UNAUTHORIZED,
@@ -60,7 +66,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
         } else if (exception instanceof AuthenticationServiceException) {
             logger.info("AuthenticationServiceException");
-            Response.json(response, HttpStatus.INTERNAL_SERVER_ERROR,
+            Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(exception.getMessage()));
 
         } else if (exception instanceof ContentTypeNullException) {
