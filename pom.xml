@@ -33,6 +33,7 @@
         <mybatis-starter.version>2.1.3</mybatis-starter.version>
         <tk-mapper-starter.version>2.1.5</tk-mapper-starter.version>
         <pagehelper-starter.version>1.2.13</pagehelper-starter.version>
+        <httpclient.version>4.5.12</httpclient.version>
         <easyexcel.version>2.2.3</easyexcel.version>
         <aliyun-oss.version>3.10.0</aliyun-oss.version>
         <minio.version>7.0.2</minio.version>
@@ -163,6 +164,13 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>${apache-commons-beanutils.version}</version>
+        </dependency>
+
+        <!-- Httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
         </dependency>
 
         <!-- EasyExcel -->
