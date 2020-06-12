@@ -34,6 +34,8 @@
         <tk-mapper-starter.version>2.1.5</tk-mapper-starter.version>
         <pagehelper-starter.version>1.2.13</pagehelper-starter.version>
         <easyexcel.version>2.2.3</easyexcel.version>
+        <aliyun-oss.version>3.10.0</aliyun-oss.version>
+        <minio.version>7.0.2</minio.version>
         <nacos-config-spring-boot.version>0.2.7</nacos-config-spring-boot.version>
     </properties>
 
@@ -175,6 +177,20 @@
             <groupId>com.alibaba.boot</groupId>
             <artifactId>nacos-config-spring-boot-starter</artifactId>
             <version>${nacos-config-spring-boot.version}</version>
+        </dependency>
+
+        <!-- Aliyun OSS -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${aliyun-oss.version}</version>
+        </dependency>
+
+        <!-- Minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
         </dependency>
 
         <dependency>

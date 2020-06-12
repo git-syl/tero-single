@@ -22,6 +22,18 @@ logging:
   level:
     com.oktfolio.tero.dao.mapper: DEBUG
     org.springframework.security: DEBUG
+
+
+tero:
+  minio:
+    endpoint: http://127.0.0.1:19000
+    access-key: minioadmin
+    secret-key: minioadmin
+  aliyun:
+    oss:
+      endpoint: aliyun
+      access-key-id: aliyun
+      secret-access-key: aliyun
 mapper:
   mappers:
     - tk.mybatis.mapper.common.Mapper
