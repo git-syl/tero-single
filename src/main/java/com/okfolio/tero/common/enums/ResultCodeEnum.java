@@ -9,12 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ResultCodeEnum implements ResultCode {
     // Success
     SUCCESS("20000", "Success", HttpStatus.OK),
-    // Error
-    ERROR("40000", "Error", HttpStatus.BAD_REQUEST),
     // Invalid params
     INVALID_PARAMS("40010", "Invalid params", HttpStatus.BAD_REQUEST),
-    // Internal server error
-    INTERNAL_SERVER_ERROR("50000", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     // Unauthorized
     UNAUTHORIZED("40100", "Unauthorized", HttpStatus.UNAUTHORIZED),
     // Forbidden
@@ -22,7 +18,11 @@ public enum ResultCodeEnum implements ResultCode {
     // Access denied
     ACCESS_DENIED("40300", "Access denied", HttpStatus.FORBIDDEN),
     // Not found
-    NOT_FOUND("40400", "Not found", HttpStatus.NOT_FOUND)
+    NOT_FOUND("40400", "Not found", HttpStatus.NOT_FOUND),
+    // Internal server error
+    INTERNAL_SERVER_ERROR("50000", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    // Error
+    ERROR("50001", "Error", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private final String value;
@@ -47,6 +47,6 @@ public enum ResultCodeEnum implements ResultCode {
 
     @Override
     public HttpStatus status() {
-        return null;
+        return this.status;
     }
 }
