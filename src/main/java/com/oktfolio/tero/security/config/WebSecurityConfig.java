@@ -76,9 +76,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 jsonUsernamePasswordAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class);
 
+        // json authentication filter
+        http.addFilterAt(
+                jsonEmailAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+
         // email authentication filter
         http.addFilterAt(
                 emailAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+
+        // json phone authentication filter
+        http.addFilterAt(
+                jsonPhoneAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class);
 
         // phone authentication filter
