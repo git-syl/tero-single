@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                              AccessDeniedHandler accessDeniedHandler,
                              AuthenticationFailureHandler authenticationFailureHandler,
                              AuthenticationSuccessHandler authenticationSuccessHandler,
-                             PasswordEncoder passwordEncoder, AuthenticationEntryPoint authenticationEntryPoint) {
+                             PasswordEncoder passwordEncoder,
+                             AuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
@@ -78,14 +79,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class);
 
         // email authentication filter
-        http.addFilterAfter(
+        http.addFilterAt(
                 emailAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class);
 
         // phone authentication filter
-        http.addFilterAfter(
-                phoneAuthenticationFilter() ,
-                EmailAuthenticationFilter.class);
+        http.addFilterAt(
+                phoneAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin()
                 .successHandler(authenticationSuccessHandler)
