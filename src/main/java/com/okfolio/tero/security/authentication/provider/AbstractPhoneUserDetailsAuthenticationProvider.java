@@ -269,7 +269,7 @@ public abstract class AbstractPhoneUserDetailsAuthenticationProvider
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return (UsernamePasswordAuthenticationToken.class
+        return (PhoneAuthenticationToken.class
                 .isAssignableFrom(authentication));
     }
 
