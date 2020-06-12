@@ -2,9 +2,7 @@ package com.oktfolio.tero.security.config;
 
 import com.oktfolio.tero.security.authentication.provider.EmailAuthenticationProvider;
 import com.oktfolio.tero.security.authentication.provider.PhoneAuthenticationProvider;
-import com.oktfolio.tero.security.filter.EmailAuthenticationFilter;
-import com.oktfolio.tero.security.filter.JsonUsernamePasswordAuthenticationFilter;
-import com.oktfolio.tero.security.filter.PhoneAuthenticationFilter;
+import com.oktfolio.tero.security.filter.*;
 import com.oktfolio.tero.security.userdetails.ITeroUserDetailsService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -145,10 +143,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    public JsonEmailAuthenticationFilter jsonEmailAuthenticationFilter() throws Exception {
+        var filter = new JsonEmailAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setFilterProcessesUrl("/login/email");
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        return filter;
+    }
+
     public EmailAuthenticationFilter emailAuthenticationFilter() throws Exception {
         var filter = new EmailAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setFilterProcessesUrl("/login/email");
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        return filter;
+    }
+
+    public JsonPhoneAuthenticationFilter jsonPhoneAuthenticationFilter() throws Exception {
+        var filter = new JsonPhoneAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setFilterProcessesUrl("/login/phone");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
         return filter;

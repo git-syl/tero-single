@@ -143,6 +143,15 @@ public class ResultEntity {
                 .build();
     }
 
+    public static ResultEntity of(HttpStatus status, String message) {
+        return ResultEntity.builder()
+                .status(status)
+                .code(ResultCodeEnum.ERROR.value())
+                .message(message)
+                .datetime(LocalDateTime.now())
+                .build();
+    }
+
     public static ResultEntity ok(Object data) {
         return ResultEntity.builder()
                 .status(HttpStatus.OK)

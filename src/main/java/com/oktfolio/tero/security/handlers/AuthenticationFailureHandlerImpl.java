@@ -2,6 +2,8 @@ package com.oktfolio.tero.security.handlers;
 
 import com.oktfolio.tero.common.ResultEntity;
 import com.oktfolio.tero.common.enums.UserResultCodeEnum;
+import com.oktfolio.tero.security.exception.ContentTypeNullException;
+import com.oktfolio.tero.security.exception.MethodNotSupportedException;
 import com.oktfolio.tero.utils.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +33,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        if (exception instanceof AuthenticationServiceException) {
-            logger.info("AuthenticationServiceException");
-            Response.json(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(exception.getMessage()));
-
-        } else if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
+        if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             logger.info("UsernameNotFoundException || BadCredentialsException");
             Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD));
@@ -60,6 +57,21 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
             logger.info("DisabledException");
             Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(UserResultCodeEnum.USER_DISABLED));
+
+        } else if (exception instanceof AuthenticationServiceException) {
+            logger.info("AuthenticationServiceException");
+            Response.json(response, HttpStatus.INTERNAL_SERVER_ERROR,
+                    ResultEntity.unauthorized(exception.getMessage()));
+
+        } else if (exception instanceof ContentTypeNullException) {
+            logger.info("ContentTypeNullException");
+            Response.json(response, HttpStatus.BAD_REQUEST,
+                    ResultEntity.of(HttpStatus.BAD_REQUEST, exception.getMessage()));
+
+        } else if (exception instanceof MethodNotSupportedException) {
+            logger.info("MethodNotSupportedException");
+            Response.json(response, HttpStatus.BAD_REQUEST,
+                    ResultEntity.of(HttpStatus.BAD_REQUEST, exception.getMessage()));
 
         } else {
             logger.info("onAuthenticationFailure");

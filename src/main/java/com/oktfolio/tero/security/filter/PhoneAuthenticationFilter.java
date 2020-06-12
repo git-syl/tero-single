@@ -1,6 +1,7 @@
 package com.oktfolio.tero.security.filter;
 
 import com.oktfolio.tero.security.authentication.PhoneAuthenticationToken;
+import com.oktfolio.tero.security.exception.MethodNotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -34,7 +35,7 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (postOnly && !HttpMethod.POST.name().equals(request.getMethod())) {
-            throw new AuthenticationServiceException(
+            throw new MethodNotSupportedException(
                     "Authentication method not supported: " + request.getMethod());
         } else {
             String phone = this.obtainPhone(request);
