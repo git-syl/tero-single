@@ -3,7 +3,7 @@ package com.oktfolio.tero.security.handlers;
 import com.oktfolio.tero.common.ResultEntity;
 import com.oktfolio.tero.common.enums.UserResultCodeEnum;
 import com.oktfolio.tero.security.exception.ContentTypeNullException;
-import com.oktfolio.tero.security.exception.InvalidCodeException;
+import com.oktfolio.tero.security.exception.InvalidVerificationCodeException;
 import com.oktfolio.tero.security.exception.MethodNotSupportedException;
 import com.oktfolio.tero.utils.Response;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
             Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD));
 
-        } else if (exception instanceof InvalidCodeException) {
+        } else if (exception instanceof InvalidVerificationCodeException) {
             logger.info("InvalidCodeException");
             Response.json(response, HttpStatus.UNAUTHORIZED,
                     ResultEntity.unauthorized(UserResultCodeEnum.INVALID_VERIFICATION_CODE));
