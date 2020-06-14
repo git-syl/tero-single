@@ -12,13 +12,13 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "tero.security", ignoreInvalidFields = false, ignoreUnknownFields = true)
 public class TeroSecurityConfig {
-    private List<String> ignoreUrls;
+    private List<String> ignoreUris;
 
-    public List<String> getIgnoreUrls() {
-        return ignoreUrls;
+    public List<String> getIgnoreUris() {
+        return ignoreUris;
     }
 
-    public void setIgnoreUrls(List<String> ignoreUrls) {
-        this.ignoreUrls = ignoreUrls;
+    public void setIgnoreUris(List<String> ignoreUris) {
+        this.ignoreUris = ignoreUris;
     }
 }

@@ -18,10 +18,6 @@ spring:
         max-active: 8
         max-idle: 8
         max-wait: -1ms
-logging:
-  level:
-    com.oktfolio.tero.dao.mapper: DEBUG
-    org.springframework.security: DEBUG
 tero:
   minio:
     endpoint: http://127.0.0.1:19000
@@ -36,11 +32,15 @@ tero:
     center-id: 1
     machine-id: 1
   security:
-    ignore-urls:
+    ignore-uris:
       - /test
       - /test1
 mapper:
   mappers:
-    - tk.mybatis.mapper.common.Mapper
+      - tk.mybatis.mapper.common.Mapper
   notEmpty: true
   style: camelhump
+logging:
+  level:
+    com.oktfolio.tero.dao.mapper: DEBUG
+    org.springframework.security: DEBUG
