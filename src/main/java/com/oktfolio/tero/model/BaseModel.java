@@ -1,12 +1,13 @@
 package com.oktfolio.tero.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/11
  */
-public class BaseModel {
+public abstract class BaseModel implements Serializable {
     /**
      * 主键
      */

@@ -7,6 +7,11 @@ import java.util.List;
 import com.oktfolio.tero.model.user.UserExample;
 import com.oktfolio.tero.model.user.UserDO;
 import com.oktfolio.tero.modules.user.service.UserService;
+
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/15
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

@@ -1,10 +1,15 @@
 package com.oktfolio.tero.modules.user.service;
 
 import java.util.List;
+
 import com.oktfolio.tero.model.user.UserExample;
 import com.oktfolio.tero.model.user.UserDO;
-public interface UserService {
 
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/15
+ */
+public interface UserService {
 
     long countByExample(UserExample example);
 

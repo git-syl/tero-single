@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/15
+ */
 public class UserExample {
     protected String orderByClause;
 

@@ -2,7 +2,14 @@ package com.oktfolio.tero.model.user;
 
 import com.oktfolio.tero.model.BaseModel;
 
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/15
+ */
 public class UserDO extends BaseModel {
+
+    private static final long serialVersionUID = 1268971643677627469L;
+
     private String uid;
 
     private String username;
