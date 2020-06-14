@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
  * @date 2020/06/11
  */
 public abstract class BaseModel implements Serializable {
+
+    private static final long serialVersionUID = 3870367208024878221L;
     /**
      * 主键
      */
@@ -16,7 +18,6 @@ public abstract class BaseModel implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
-
     /**
      * 修改时间
      */
