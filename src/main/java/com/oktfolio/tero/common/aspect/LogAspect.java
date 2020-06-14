@@ -1,6 +1,7 @@
 package com.oktfolio.tero.common.aspect;
 
 import com.oktfolio.tero.common.annotation.Log;
+import com.oktfolio.tero.common.enums.LogTypeEnum;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,16 +17,17 @@ import org.springframework.security.core.Authentication;
 public class LogAspect {
 
     @Pointcut("@annotation(com.oktfolio.tero.common.annotation.Log)")
-    public void controllerAspect() {
+    public void aspect() {
     }
 
-    @Before("controllerAspect()")
-    public void doBefore(JoinPoint joinPoint, Log log, Authentication authentication) {
-
+    @Before("aspect()")
+    public void doBefore(JoinPoint joinPoint, Log log) {
+        String logName = log.name();
+        LogTypeEnum logType = log.type();
 
     }
 
-    @After("controllerAspect()")
-    public void after(JoinPoint joinPoint, Authentication authentication) {
+    @After("aspect()")
+    public void after(JoinPoint joinPoint) {
     }
 }

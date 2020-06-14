@@ -81,7 +81,7 @@ public class JsonPhoneAuthenticationFilter extends PhoneAuthenticationFilter {
             return this.getAuthenticationManager().authenticate(authRequest);
         } else {
             // if not JSON request，continue with attemptAuthentication
-            logger.info("not a json request, use default UsernamePasswordAuthenticationFilter");
+            logger.info("not a json request, use default PhoneAuthenticationFilter");
             return super.attemptAuthentication(request, response);
         }
     }

@@ -81,7 +81,7 @@ public class JsonEmailAuthenticationFilter extends EmailAuthenticationFilter{
             return this.getAuthenticationManager().authenticate(authRequest);
         } else {
             // if not JSON request，continue with attemptAuthentication
-            logger.info("not a json request, use default UsernamePasswordAuthenticationFilter");
+            logger.info("not a json request, use EmailAuthenticationFilter");
             return super.attemptAuthentication(request, response);
         }
     }
