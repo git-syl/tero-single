@@ -10,7 +10,7 @@ public class BaseModel {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
     /**
      * 创建时间
      */
@@ -21,11 +21,11 @@ public class BaseModel {
      */
     private LocalDateTime updateTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
