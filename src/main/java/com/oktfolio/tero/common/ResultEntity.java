@@ -88,7 +88,7 @@ public class ResultEntity<T> {
             return this;
         }
 
-        public <T> ResultEntity<T> data(T data) {
+        public <T> ResultEntity<T> data(@Nullable T data) {
             return new ResultEntity<>(code, message, data, status, datetime);
         }
 
@@ -104,23 +104,10 @@ public class ResultEntity<T> {
                 .build();
     }
 
-    public static <T> ResultEntity<T> ok(@Nullable T data) {
-        return ResultEntity.builder()
-                .status(HttpStatus.OK)
-                .datetime(LocalDateTime.now())
-                .data(data);
-    }
-
     public static <T> ResultEntity<T> created() {
         return ResultEntity.builder()
                 .status(HttpStatus.CREATED)
                 .build();
-    }
-
-    public static <T> ResultEntity<T> created(T data) {
-        return ResultEntity.builder()
-                .status(HttpStatus.CREATED)
-                .data(data);
     }
 
     public static <T> ResultEntity<T> noContent() {
@@ -129,88 +116,114 @@ public class ResultEntity<T> {
                 .build();
     }
 
-    public static ResultEntity.Builder of(ResultCode resultCode) {
+    public static <T> ResultEntity<T> ok(T data) {
+        return ResultEntity.builder()
+                .status(HttpStatus.OK)
+                .datetime(LocalDateTime.now())
+                .data(data);
+    }
+
+    public static <T> ResultEntity<T> created(T data) {
+        return ResultEntity.builder()
+                .status(HttpStatus.CREATED)
+                .data(data);
+    }
+
+    public static <T> ResultEntity<T> of(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(resultCode.status())
                 .code(resultCode.value())
                 .message(resultCode.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder error() {
+    public static <T> ResultEntity<T> error() {
         return ResultEntity.builder()
                 .status(ResultCodeEnum.ERROR.status())
                 .code(ResultCodeEnum.ERROR.value())
                 .message(ResultCodeEnum.ERROR.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder error(HttpStatus status, String message) {
+    public static <T> ResultEntity<T> error(@Nonnull HttpStatus status, @Nonnull String message) {
         return ResultEntity.builder()
                 .status(status)
                 .code(ResultCodeEnum.ERROR.value())
                 .message(message)
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder notFound(ResultCode resultCode) {
+    public static <T> ResultEntity<T> notFound(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .code(resultCode.value())
                 .message(resultCode.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder badRequest(ResultCode resultCode) {
+    public static <T> ResultEntity<T> badRequest(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .code(resultCode.value())
-                .message(resultCode.message());
+                .message(resultCode.message())
+                .build();
     }
 
-    public static ResultEntity.Builder unauthorized(ResultCode resultCode) {
+    public static <T> ResultEntity<T> unauthorized(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.UNAUTHORIZED)
                 .code(resultCode.value())
                 .message(resultCode.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder unauthorized(String message) {
+    public static <T> ResultEntity<T> unauthorized(String message) {
         return ResultEntity.builder()
                 .status(HttpStatus.UNAUTHORIZED)
                 .code(ResultCodeEnum.ERROR.value())
                 .message(message)
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder forbidden(ResultCode resultCode) {
+    public static <T> ResultEntity<T> forbidden(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.FORBIDDEN)
                 .code(resultCode.value())
                 .message(resultCode.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder created(ResultCode resultCode) {
+    public static <T> ResultEntity<T> created(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.CREATED)
                 .code(resultCode.value())
-                .message(resultCode.message());
+                .message(resultCode.message())
+                .build();
     }
 
-    public static ResultEntity.Builder internalServerError() {
+    public static <T> ResultEntity<T> internalServerError() {
         return ResultEntity.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .datetime(LocalDateTime.now());
+                .status(ResultCodeEnum.INTERNAL_SERVER_ERROR.status())
+                .code(ResultCodeEnum.INTERNAL_SERVER_ERROR.value())
+                .message(ResultCodeEnum.INTERNAL_SERVER_ERROR.message())
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
-    public static ResultEntity.Builder internalServerError(ResultCode resultCode) {
+    public static <T> ResultEntity<T> internalServerError(@Nonnull ResultCode resultCode) {
         return ResultEntity.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .code(resultCode.value())
                 .message(resultCode.message())
-                .datetime(LocalDateTime.now());
+                .datetime(LocalDateTime.now())
+                .build();
     }
 
     public ResponseEntity<Object> responseEntity() {
