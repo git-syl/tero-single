@@ -109,7 +109,7 @@ public class ResultEntity<T> {
         }
 
         public <T> ResultEntity<T> build() {
-            return this.data((null));
+            return this.data(null);
         }
 
     }
