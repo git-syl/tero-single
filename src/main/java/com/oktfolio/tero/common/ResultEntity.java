@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultEntity<T> {
-    private String code;
-    private String message;
-    private T data;
-    private HttpStatus status;
+    protected String code;
+    protected String message;
+    protected T data;
+    protected HttpStatus status;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime datetime;
+    protected LocalDateTime datetime;
 
     public String getCode() {
         return code;
@@ -38,7 +38,7 @@ public class ResultEntity<T> {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
