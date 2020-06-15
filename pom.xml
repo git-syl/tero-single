@@ -229,6 +229,14 @@
             <version>[7.2.0, 7.2.99]</version>
         </dependency>
 
+        <!-- qpid-jms-client -->
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+            <version>0.52.0</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>

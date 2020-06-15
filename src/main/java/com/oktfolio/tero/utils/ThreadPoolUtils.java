@@ -11,15 +11,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2020/06/13
  */
 public class ThreadPoolUtils {
-    private static ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat
+    private static final ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat
             ("guava-thread-pool-%d").build();
 
     private static ExecutorService executorService;
 
     public static ExecutorService getExecutorService() {
-        int corePoolSize = 5;
-        int maximumPoolSize = 20;
-        long keepAliveTime = 500L;
+        int corePoolSize = Runtime.getRuntime().availableProcessors();
+        int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+        long keepAliveTime = 6000L;
         int capacity = Integer.MAX_VALUE;
         return getExecutorService(corePoolSize,
                 maximumPoolSize,

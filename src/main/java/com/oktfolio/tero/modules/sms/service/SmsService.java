@@ -27,6 +27,6 @@ public class SmsService {
     }
 
     public void sendSms(SmsStrategy smsStrategy){
-        smsContext.smsSend();
+        smsContext.send();
     }
 }

@@ -18,7 +18,7 @@ public class SmsContext {
         strategyMap.forEach(this.smsContextStrategyMap::put);
     }
 
-    public void smsSend() {
+    public void send() {
         SmsStrategy aliSms = smsContextStrategyMap.get("ALI");
         aliSms.sendSms();
     }
