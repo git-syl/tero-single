@@ -221,7 +221,7 @@ public class ResultEntity<T> {
                 .datetime(LocalDateTime.now());
     }
 
-    public ResponseEntity<ResultEntity<T>> responseEntity() {
+    public ResponseEntity<Object> responseEntity() {
         return new ResponseEntity<>(this, this.getStatus());
     }
 }
