@@ -8,59 +8,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2020/06/13
  */
 public class ThreadPoolUtils {
-
-    private ThreadPoolExecutor pool = null;
-
-    public ThreadPoolExecutor getNewInstance(int corePoolSize, int maxThreadSize, String poolName, int maxTaskSize) {
-
-        pool = createPool(corePoolSize, maxThreadSize, poolName, maxTaskSize);
-
-        if (pool == null) {
-            throw new NullPointerException();
-        } else {
-            return pool;
-        }
+    private static ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat
+        ("guava-thread-pool-%d").build();
+    
+    private static ExecutorService executorService;
+    
+    public static ExecutorService getExecutorService(){
+        int corePoolSize = 5;
+        int maximumPoolSize = 20;
+        long keepAliveTime = 500L;
+        int capacity = Integer.MAX_VALUE;
+        return getExecutorService(corePoolSize,
+                maximumPoolSize,
+                keepAliveTime,
+                capacity);
     }
-
-    private ThreadPoolExecutor createPool(int corePoolSize, int maxThreadSize, String poolName, int maxTaskSize) {
-
-        return new ThreadPoolExecutor(corePoolSize, maxThreadSize, 0,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(maxTaskSize),
-                new CustomThreadFactory(poolName),
-                new RejectedExecutionHandlerImpl());
-    }
-
-    private class CustomThreadFactory implements ThreadFactory {
-
-        private final String poolName;
-
-        public CustomThreadFactory(String poolName) {
-            this.poolName = poolName;
+    
+    public static ExecutorService getExecutorService(int corePoolSize,
+                                                     int maximumPoolSize,
+                                                     long keepAliveTime,
+                                                     int capacity){
+        if (executorService == null || executorService.isShutdown()){
+            executorService = new ThreadExecutor(corePoolSerize, maximumPoolSize, keepAliveTime,
+                    TimeUtil.MILLISECONDS, new LinkedBlockingQueue<>(capacity), NAMED_THREAD_FACTORY,
+                    new ThreadPoolExecutor.AbortPolicy());
         }
-
-        private AtomicInteger count = new AtomicInteger(0);
-
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
-            String nowThreadName = "";
-            nowThreadName = poolName + count.addAndGet(1);
-            t.setName(nowThreadName);
-            return t;
-        }
+        return executorSerivce;
     }
-
-    private class RejectedExecutionHandlerImpl implements RejectedExecutionHandler {
-
-        @Override
-        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-            try {
-                System.out.println("重回队列");
-                executor.getQueue().put(r);
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
 }
