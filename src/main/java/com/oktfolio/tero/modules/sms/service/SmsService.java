@@ -2,7 +2,6 @@ package com.oktfolio.tero.modules.sms.service;
 
 import com.oktfolio.tero.modules.sms.SmsStrategy;
 import com.oktfolio.tero.modules.sms.producer.SmsMqProducer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
