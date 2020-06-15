@@ -1,5 +1,6 @@
 package com.oktfolio.tero.modules.sms.producer;
 
+import com.oktfolio.tero.modules.rocketmq.RocketMq;
 import com.oktfolio.tero.modules.sms.consumer.SmsMqConsumer;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -9,6 +10,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -25,6 +27,12 @@ public class SmsMqProducer {
     private final static String TAG = "";
     private final static String TOPIC = "";
     private final static String GROUP_NAME = "";
+
+    private final RocketMq rocketMq;
+
+    public SmsMqProducer(RocketMq rocketMq) {
+        this.rocketMq = rocketMq;
+    }
 
     public void produce() {
 

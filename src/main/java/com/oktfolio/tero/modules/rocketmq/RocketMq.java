@@ -3,8 +3,10 @@ package com.oktfolio.tero.modules.rocketmq;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
@@ -12,17 +14,33 @@ import java.nio.charset.StandardCharsets;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/16
  */
+@Service
 public class RocketMq {
 
-    public void sendSequqnceMessage(DefaultMQProducer producer,
-                                    String top,
-                                    String tag,
-                                    String keys,
-                                    String content) {
+    public SendResult sendNormalMessage(DefaultMQProducer producer,
+                                        String top,
+                                        String tag,
+                                        String keys,
+                                        String content) {
         Message msg = new Message(top, tag, keys, content.getBytes(StandardCharsets.UTF_8));
+        SendResult send = null;
         try {
-            // 创建一个自定义消息队列选择器
-            producer.send(msg, (mqs, msg1, arg) -> {
+            send = producer.send(msg);
+        } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return send;
+    }
+
+    public SendResult sendSequenceMessage(DefaultMQProducer producer,
+                                          String top,
+                                          String tag,
+                                          String keys,
+                                          String content) {
+        Message msg = new Message(top, tag, keys, content.getBytes(StandardCharsets.UTF_8));
+        SendResult send = null;
+        try {
+            send = producer.send(msg, (mqs, msg1, arg) -> {
                 Integer id = (Integer) arg;
                 int index = id % mqs.size();
                 return mqs.get(index);
@@ -30,6 +48,7 @@ public class RocketMq {
         } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
             e.printStackTrace();
         }
+        return send;
     }
 
     /**
@@ -42,18 +61,20 @@ public class RocketMq {
      * @param keys
      * @param content
      */
-    public void sendDelayMessage(DefaultMQProducer producer,
+    public SendResult sendDelayMessage(DefaultMQProducer producer,
                                  String top,
                                  String tag,
                                  String keys,
                                  String content,
                                  int timeLevel) {
         Message msg = new Message(top, tag, keys, content.getBytes(StandardCharsets.UTF_8));
+        SendResult send = null;
         msg.setDelayTimeLevel(timeLevel);
         try {
-            producer.send(msg);
+            send = producer.send(msg);
         } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
             e.printStackTrace();
         }
+        return send;
     }
 }
