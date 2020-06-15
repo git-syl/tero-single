@@ -20,7 +20,7 @@ public class LogAspect {
     public void aspect() {
     }
 
-    @Before("aspect()")
+    @Before("aspect() && @annotation(log)")
     public void doBefore(JoinPoint joinPoint, Log log) {
         String logName = log.name();
         LogTypeEnum logType = log.type();
