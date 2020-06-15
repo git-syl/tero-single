@@ -1,4 +1,4 @@
-package com.oktfolio.tero.modules.rocketmq;
+package com.oktfolio.tero.modules.mq;
 
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2020/06/16
  */
 @Service
-public class RocketMq {
+public class Rocket {
 
     public SendResult sendNormalMessage(DefaultMQProducer producer,
                                         String top,
