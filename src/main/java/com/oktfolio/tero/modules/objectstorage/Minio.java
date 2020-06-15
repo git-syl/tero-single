@@ -1,4 +1,4 @@
-package com.oktfolio.tero.objectstorage;
+package com.oktfolio.tero.modules.objectstorage;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectOptions;

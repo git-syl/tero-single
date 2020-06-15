@@ -1,4 +1,4 @@
-package com.oktfolio.tero.objectstorage;
+package com.oktfolio.tero.modules.objectstorage;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.GetObjectRequest;

@@ -1,4 +1,4 @@
-package com.oktfolio.tero.objectstorage;
+package com.oktfolio.tero.modules.objectstorage;
 
 /**
  * @author oktfolio oktfolio@gmail.com
