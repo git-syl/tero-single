@@ -1,5 +1,6 @@
 package com.oktfolio.tero.modules.sms.consumer;
 
+import com.oktfolio.tero.utils.ThreadPoolUtils;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -11,6 +12,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author oktfolio oktfolio@gmail.com
@@ -53,6 +55,10 @@ public class SmsMqConsumer {
 
     ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
                                              ConsumeConcurrentlyContext context) {
+        for (MessageExt msg : msgs) {
+            ExecutorService executorService = ThreadPoolUtils.getExecutorService();
+            executorService.submit(() -> System.out.println(msg));
+        }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 
