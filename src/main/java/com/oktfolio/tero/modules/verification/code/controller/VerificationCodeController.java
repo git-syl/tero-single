@@ -4,7 +4,6 @@ import com.oktfolio.tero.modules.sms.service.SmsService;
 import com.oktfolio.tero.security.model.EmailCode;
 import com.oktfolio.tero.security.model.PhoneCode;
 import com.oktfolio.tero.security.userdetails.ITeroUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
