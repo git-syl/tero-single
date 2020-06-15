@@ -37,52 +37,52 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             logger.info("UsernameNotFoundException || BadCredentialsException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.BAD_USERNAME_PASSWORD));
 
         } else if (exception instanceof InvalidVerificationCodeException) {
             logger.info("InvalidCodeException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.INVALID_VERIFICATION_CODE).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.INVALID_VERIFICATION_CODE));
 
         } else if (exception instanceof AccountExpiredException) {
             logger.info("AccountExpiredException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.USER_EXPIRED).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_EXPIRED));
 
         } else if (exception instanceof LockedException) {
             logger.info("LockedException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.USER_LOCKED).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_LOCKED));
 
         } else if (exception instanceof CredentialsExpiredException) {
             logger.info("CredentialsExpiredException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.CREDENTIALS_EXPIRED).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.CREDENTIALS_EXPIRED));
 
         } else if (exception instanceof DisabledException) {
             logger.info("DisabledException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.USER_DISABLED).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.USER_DISABLED));
 
         } else if (exception instanceof AuthenticationServiceException) {
             logger.info("AuthenticationServiceException");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(exception.getMessage()).build());
+                    ResultEntity.unauthorized(exception.getMessage()));
 
         } else if (exception instanceof ContentTypeNullException) {
             logger.info("ContentTypeNullException");
             Response.jsonResultEntity(response, HttpStatus.BAD_REQUEST,
-                    ResultEntity.error(HttpStatus.BAD_REQUEST, exception.getMessage()).build());
+                    ResultEntity.error(HttpStatus.BAD_REQUEST, exception.getMessage()));
 
         } else if (exception instanceof MethodNotSupportedException) {
             logger.info("MethodNotSupportedException");
             Response.jsonResultEntity(response, HttpStatus.BAD_REQUEST,
-                    ResultEntity.error(HttpStatus.BAD_REQUEST, exception.getMessage()).build());
+                    ResultEntity.error(HttpStatus.BAD_REQUEST, exception.getMessage()));
 
         } else {
             logger.info("onAuthenticationFailure");
             Response.jsonResultEntity(response, HttpStatus.UNAUTHORIZED,
-                    ResultEntity.unauthorized(UserResultCodeEnum.FAILED_LOGIN).build());
+                    ResultEntity.unauthorized(UserResultCodeEnum.FAILED_LOGIN));
         }
     }
 }
