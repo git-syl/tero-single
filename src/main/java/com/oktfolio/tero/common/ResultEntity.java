@@ -227,7 +227,6 @@ public class ResultEntity<T> {
     }
 
     public ResponseEntity<Object> responseEntity() {
-
         if (Objects.isNull(this.data)
                 && Strings.isNullOrEmpty(this.code)
                 && Strings.isNullOrEmpty(this.message)
