@@ -6,36 +6,24 @@ package com.oktfolio.tero.common.constant;
  */
 public class Constants {
 
-    interface Verification {
-        interface Code {
-            String PHONE = "verification_code:phone:";
-            String EMAIL = "verification_code:email:";
-            String CAPTCHA = "verification_code:image:";
-        }
-    }
-
     enum UserStatusEnum {
 
         /**
          * 密码过期
          */
         CREDENTIAL_EXPIRED(4, "密码过期"),
-
         /**
          * 已锁定
          */
         LOCKED(3, "已锁定"),
-
         /**
          * 已过期
          */
         EXPIRED(2, "已过期"),
-
         /**
          * 已启用
          */
         ENABLED(1, "已启用"),
-
         /**
          * 未启用
          */
