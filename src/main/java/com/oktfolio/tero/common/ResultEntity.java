@@ -63,10 +63,10 @@ public class ResultEntity<T> {
 
     public static class Builder {
 
-        private String code;
-        private String message;
-        private HttpStatus status;
-        private LocalDateTime datetime;
+        protected String code;
+        protected String message;
+        protected HttpStatus status;
+        protected LocalDateTime datetime;
 
         public Builder code(String code) {
             this.code = code;
