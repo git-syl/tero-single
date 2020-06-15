@@ -1,5 +1,6 @@
 package com.oktfolio.tero.modules.mq;
 
+import com.oktfolio.tero.utils.ThreadPoolUtils;
 import org.apache.qpid.jms.JmsConnection;
 import org.apache.qpid.jms.JmsConnectionListener;
 import org.apache.qpid.jms.message.JmsInboundMessageDispatch;
@@ -17,17 +18,14 @@ import java.net.URI;
 import java.util.Base64;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/16
  */
-public class Amqp {
+public class AmqpConsumer {
 
-    private final static Logger logger = LoggerFactory.getLogger(Amqp.class);
+    private final static Logger logger = LoggerFactory.getLogger(AmqpConsumer.class);
 
     private final static String ACCESS_KEY = "";
     private final static String SECRETE_KEY = "";
@@ -36,11 +34,7 @@ public class Amqp {
     private final static String CLIENT_ID = "";
 
     //业务处理异步线程池，线程池参数可以根据您的业务特点调整，或者您也可以用其他异步方式处理接收到的消息。
-    private final static ExecutorService executorService = new ThreadPoolExecutor(
-            Runtime.getRuntime().availableProcessors(),
-            Runtime.getRuntime().availableProcessors() * 2, 60, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(50000));
-
+    private final static ExecutorService executorService = ThreadPoolUtils.getExecutorService();
 
     @EventListener(ContextRefreshedEvent.class)
     public void execute() {
@@ -87,7 +81,7 @@ public class Amqp {
         Destination queue = (Destination) context.lookup("QUEUE");
         // Create Connection
         Connection connection = cf.createConnection(userName, password);
-        ((JmsConnection) connection).addConnectionListener(myJmsConnectionListener);
+        ((JmsConnection) connection).addConnectionListener(MY_JMS_CONNECTION_LISTENER);
         // Create Session
         // Session.CLIENT_ACKNOWLEDGE: 收到消息后，需要手动调用message.acknowledge()。
         // Session.AUTO_ACKNOWLEDGE: SDK自动ACK（推荐）。
@@ -95,10 +89,10 @@ public class Amqp {
         connection.start();
         // Create Receiver Link
         MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(messageListener);
+        consumer.setMessageListener(MESSAGE_LISTENER);
     }
 
-    private static final MessageListener messageListener = message -> {
+    private static final MessageListener MESSAGE_LISTENER = message -> {
         try {
             //1.收到消息之后一定要ACK。
             // 推荐做法：创建Session选择Session.AUTO_ACKNOWLEDGE，这里会自动ACK。
@@ -130,7 +124,7 @@ public class Amqp {
         }
     }
 
-    private static JmsConnectionListener myJmsConnectionListener = new JmsConnectionListener() {
+    private static final JmsConnectionListener MY_JMS_CONNECTION_LISTENER = new JmsConnectionListener() {
         /**
          * 连接成功建立。
          */
@@ -181,7 +175,7 @@ public class Amqp {
     };
 
     /**
-     * password签名计算方法，请参见文档：AMQP客户端接入说明。
+     * password 签名计算方法，请参见文档：AMQP客户端接入说明。
      */
     private static String doSign(String toSignString, String secret, String signMethod) throws Exception {
         SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(), signMethod);
