@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.oktfolio.tero.common.enums.ResultCode;
 import com.oktfolio.tero.common.enums.ResultCodeEnum;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
@@ -218,5 +219,9 @@ public class ResultEntity<T> {
                 .code(resultCode.value())
                 .message(resultCode.message())
                 .datetime(LocalDateTime.now());
+    }
+
+    public ResponseEntity<ResultEntity<T>> responseEntity() {
+        return new ResponseEntity<>(this, this.getStatus());
     }
 }
