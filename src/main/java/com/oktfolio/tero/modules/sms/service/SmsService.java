@@ -1,7 +1,9 @@
 package com.oktfolio.tero.modules.sms.service;
 
+import com.oktfolio.tero.modules.sms.SmsContext;
 import com.oktfolio.tero.modules.sms.SmsStrategy;
 import com.oktfolio.tero.modules.sms.producer.SmsMqProducer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +15,9 @@ public class SmsService {
 
     private final SmsMqProducer smsMqProducer;
 
+    @Autowired
+    private SmsContext smsContext;
+
     public SmsService(SmsMqProducer smsMqProducer) {
         this.smsMqProducer = smsMqProducer;
     }
@@ -22,6 +27,6 @@ public class SmsService {
     }
 
     public void sendSms(SmsStrategy smsStrategy){
-        smsStrategy.sendSms();
+        smsContext.smsSend();
     }
 }

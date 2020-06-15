@@ -14,14 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SmsContext {
     private final Map<String, SmsStrategy> smsContextStrategyMap = new ConcurrentHashMap<>();
 
-    private final SmsService smsService;
-
-    public SmsContext(Map<String, SmsStrategy> strategyMap,
-                      SmsService smsService) {
+    public SmsContext(Map<String, SmsStrategy> strategyMap) {
         strategyMap.forEach(this.smsContextStrategyMap::put);
-        this.smsService = smsService;
     }
-
 
     public void smsSend() {
         SmsStrategy aliSms = smsContextStrategyMap.get("ALI");
