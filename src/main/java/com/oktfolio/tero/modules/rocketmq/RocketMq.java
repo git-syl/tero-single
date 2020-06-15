@@ -3,13 +3,10 @@ package com.oktfolio.tero.modules.rocketmq;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.client.producer.MessageQueueSelector;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * @author oktfolio oktfolio@gmail.com
@@ -17,11 +14,11 @@ import java.util.List;
  */
 public class RocketMq {
 
-    public void sendSeqMessage(DefaultMQProducer producer,
-                               String top,
-                               String tag,
-                               String keys,
-                               String content) {
+    public void sendSequqnceMessage(DefaultMQProducer producer,
+                                    String top,
+                                    String tag,
+                                    String keys,
+                                    String content) {
         Message msg = new Message(top, tag, keys, content.getBytes(StandardCharsets.UTF_8));
         try {
             // 创建一个自定义消息队列选择器
@@ -30,6 +27,31 @@ public class RocketMq {
                 int index = id % mqs.size();
                 return mqs.get(index);
             }, keys);
+        } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 1  2  3   4   5  6  7  8  9  10 11 12 13 14  15  16  17 18
+     * 1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h
+     *
+     * @param producer
+     * @param top
+     * @param tag
+     * @param keys
+     * @param content
+     */
+    public void sendDelayMessage(DefaultMQProducer producer,
+                                 String top,
+                                 String tag,
+                                 String keys,
+                                 String content,
+                                 int timeLevel) {
+        Message msg = new Message(top, tag, keys, content.getBytes(StandardCharsets.UTF_8));
+        msg.setDelayTimeLevel(timeLevel);
+        try {
+            producer.send(msg);
         } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
             e.printStackTrace();
         }
