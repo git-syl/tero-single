@@ -2,13 +2,16 @@ package com.oktfolio.tero.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.base.Strings;
 import com.oktfolio.tero.common.enums.ResultCode;
 import com.oktfolio.tero.common.enums.ResultCodeEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author oktfolio oktfolio@gmail.com
@@ -27,40 +30,20 @@ public class ResultEntity<T> {
         return code;
     }
 
-    private void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
     }
 
     public T getData() {
         return data;
     }
 
-    private void setData(T data) {
-        this.data = data;
-    }
-
     public HttpStatus getStatus() {
         return status;
     }
 
-    private void setStatus(HttpStatus status) {
-        this.status = status;
-    }
-
     public LocalDateTime getDatetime() {
         return datetime;
-    }
-
-    public void setDatetime(LocalDateTime datetime) {
-        this.datetime = datetime;
     }
 
     private ResultEntity() {
@@ -100,7 +83,7 @@ public class ResultEntity<T> {
             return this;
         }
 
-        public Builder status(HttpStatus status) {
+        public Builder status(@Nonnull HttpStatus status) {
             this.status = status;
             return this;
         }
@@ -116,7 +99,9 @@ public class ResultEntity<T> {
     }
 
     public static <T> ResultEntity<T> ok() {
-        return ok(null);
+        return ResultEntity.builder()
+                .status(HttpStatus.OK)
+                .build();
     }
 
     public static <T> ResultEntity<T> ok(@Nullable T data) {
@@ -126,10 +111,22 @@ public class ResultEntity<T> {
                 .data(data);
     }
 
+    public static <T> ResultEntity<T> created() {
+        return ResultEntity.builder()
+                .status(HttpStatus.CREATED)
+                .build();
+    }
+
     public static <T> ResultEntity<T> created(T data) {
         return ResultEntity.builder()
                 .status(HttpStatus.CREATED)
                 .data(data);
+    }
+
+    public static <T> ResultEntity<T> noContent() {
+        return ResultEntity.builder()
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     public static ResultEntity.Builder of(ResultCode resultCode) {
@@ -154,11 +151,6 @@ public class ResultEntity<T> {
                 .code(ResultCodeEnum.ERROR.value())
                 .message(message)
                 .datetime(LocalDateTime.now());
-    }
-
-    public static ResultEntity.Builder created() {
-        return ResultEntity.builder()
-                .status(HttpStatus.CREATED);
     }
 
     public static ResultEntity.Builder notFound(ResultCode resultCode) {
@@ -222,6 +214,25 @@ public class ResultEntity<T> {
     }
 
     public ResponseEntity<Object> responseEntity() {
-        return new ResponseEntity<>(this, this.getStatus());
+
+        if (Objects.isNull(this.data)
+                && Strings.isNullOrEmpty(this.code)
+                && Strings.isNullOrEmpty(this.message)
+                && !Objects.isNull(this.status)) {
+            return new ResponseEntity<>(this.getStatus());
+        } else {
+            return new ResponseEntity<>(this, this.getStatus());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ResultEntity{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                ", status=" + status +
+                ", datetime=" + datetime +
+                '}';
     }
 }
