@@ -28,7 +28,7 @@ public class GlobalExceptionHandlers {
      * @return
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ResultEntity> bindExceptionHandler(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ResultEntity<Object>> bindExceptionHandler(MethodArgumentNotValidException exception) {
         BindingResult result = exception.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
         HashMap<String, String> map = new HashMap<>(16);
@@ -41,8 +41,7 @@ public class GlobalExceptionHandlers {
                         .status(HttpStatus.BAD_REQUEST)
                         .code(ResultCodeEnum.INVALID_PARAMS.value())
                         .message(ResultCodeEnum.INVALID_PARAMS.message())
-                        .data(map)
-                        .build());
+                        .data(map));
     }
 
     /**
@@ -52,7 +51,7 @@ public class GlobalExceptionHandlers {
      * @return
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<ResultEntity> runtimeExceptionHandler(RuntimeException exception) {
+    public ResponseEntity<ResultEntity<Object>> runtimeExceptionHandler(RuntimeException exception) {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

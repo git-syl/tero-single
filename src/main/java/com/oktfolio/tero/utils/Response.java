@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.oktfolio.tero.common.ResultEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -39,13 +40,22 @@ public class Response {
                 .build();
     }
 
-    public static void json(HttpServletResponse response, HttpStatus status) {
+    public static void json(HttpServletResponse response,
+                            HttpStatus status) {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
     }
 
-    public static void json(HttpServletResponse response, HttpStatus status, Object content) throws IOException {
+    public static void jsonResultEntity(HttpServletResponse response,
+                                        HttpStatus status,
+                                        ResultEntity<Object> result) throws IOException {
+        json(response, status, result);
+    }
+
+    public static void json(HttpServletResponse response,
+                            HttpStatus status,
+                            Object content) throws IOException {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
