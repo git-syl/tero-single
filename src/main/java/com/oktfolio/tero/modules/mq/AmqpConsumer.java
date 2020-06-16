@@ -36,7 +36,7 @@ public class AmqpConsumer {
     //业务处理异步线程池，线程池参数可以根据您的业务特点调整，或者您也可以用其他异步方式处理接收到的消息。
     private final static ExecutorService executorService = ThreadPoolUtils.getExecutorService();
 
-    @EventListener(ContextRefreshedEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void execute() {
         try {
             listen();
