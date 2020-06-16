@@ -1,3 +1,17 @@
+package com.oktfolio.tero.utils;
+
+import com.oktfolio.tero.security.userdetails.ITeroUserDetails;
+import com.oktfolio.tero.security.userdetails.TeroUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * @author oktfolio oktfolio@gmail.com
+ * @date 2020/06/17
+ */
 public class SecurityUtils {
 
     public ITeroUserDetails getCurrentUser() {
