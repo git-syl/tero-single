@@ -62,9 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // userDetailsService
         http.userDetailsService(userDetailsService);
 
-        // http.sessionManagement()
-        //         .maximumSessions(1)
-        //         .sessionRegistry(sessionRegistry);
+        http.sessionManagement()
+                .maximumSessions(1)
+                .sessionRegistry(sessionRegistry);
 
         // grant all preflight request
         http.authorizeRequests()
