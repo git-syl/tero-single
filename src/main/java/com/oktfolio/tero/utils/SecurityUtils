@@ -1,0 +1,28 @@
+public class SecurityUtils {
+
+    public ITeroUserDetails getCurrentUser() {
+        Authentication authentication = getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof ITeroUserDetails) {
+            return (TeroUserDetails) authentication.getPrincipal();
+        }
+        return null;
+    }
+
+    public ITeroUserDetails getCurrentUser(HttpServletRequest request) {
+        Authentication authentication = getAuthentication(request);
+        if (authentication != null && authentication.getPrincipal() instanceof ITeroUserDetails) {
+            return (TeroUserDetails) authentication.getPrincipal();
+        }
+        return null;
+    }
+
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public Authentication getAuthentication(HttpServletRequest request) {
+        SecurityContextImpl securityContextImpl = (SecurityContextImpl) request
+                .getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+        return securityContextImpl.getAuthentication();
+    }
+}
