@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "tero.snowflake", ignoreInvalidFields = false, ignoreUnknownFields = true)
-public class TeroSnowFlakeConfig {
+public class TeroSnowFlakeProperties {
 
     private Long centerId;
     private Long machineId;

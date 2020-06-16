@@ -2,7 +2,6 @@ package com.oktfolio.tero.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  */
 @Configuration
 @ConfigurationProperties(prefix = "tero.security", ignoreInvalidFields = false, ignoreUnknownFields = true)
-public class TeroSecurityConfig {
+public class TeroSecurityProperties {
     private List<String> ignoreUris;
 
     public List<String> getIgnoreUris() {
