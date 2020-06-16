@@ -19,7 +19,7 @@ public class ThreadPoolUtils {
     public static ExecutorService getExecutorService() {
         int corePoolSize = Runtime.getRuntime().availableProcessors();
         int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-        long keepAliveTime = 6000L;
+        long keepAliveTime = 60000L;
         int capacity = Integer.MAX_VALUE;
         return getExecutorService(corePoolSize,
                 maximumPoolSize,
