@@ -26,7 +26,7 @@ public class SmsMqConsumer {
     private final static String TOPIC = "";
     private final static String GROUP_NAME = "";
 
-    @EventListener(ContextRefreshedEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void execute() {
         listen();
     }
