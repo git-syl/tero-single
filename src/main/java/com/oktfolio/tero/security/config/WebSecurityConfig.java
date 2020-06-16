@@ -10,12 +10,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.cors.CorsUtils;
 
 /**
@@ -32,19 +34,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationFailureHandler authenticationFailureHandler;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final SessionAuthenticationStrategy sessionAuthenticationStrategy;
+    private final SessionRegistry sessionRegistry;
 
     public WebSecurityConfig(ITeroUserDetailsService userDetailsService,
                              AccessDeniedHandler accessDeniedHandler,
                              AuthenticationFailureHandler authenticationFailureHandler,
                              AuthenticationSuccessHandler authenticationSuccessHandler,
                              PasswordEncoder passwordEncoder,
-                             AuthenticationEntryPoint authenticationEntryPoint) {
+                             AuthenticationEntryPoint authenticationEntryPoint,
+                             SessionAuthenticationStrategy sessionAuthenticationStrategy, SessionRegistry sessionRegistry) {
         this.userDetailsService = userDetailsService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.passwordEncoder = passwordEncoder;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.sessionAuthenticationStrategy = sessionAuthenticationStrategy;
+        this.sessionRegistry = sessionRegistry;
     }
 
     @Override
@@ -52,7 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // csrf
         http.csrf().disable();
 
+        // userDetailsService
         http.userDetailsService(userDetailsService);
+
+        // http.sessionManagement()
+        //         .maximumSessions(1)
+        //         .sessionRegistry(sessionRegistry);
 
         // grant all preflight request
         http.authorizeRequests()
