@@ -82,7 +82,7 @@ public class AmqpConsumer {
         Destination queue = (Destination) context.lookup("QUEUE");
         // Create Connection
         Connection connection = cf.createConnection(userName, password);
-        ((JmsConnection) connection).addConnectionListener(MY_JMS_CONNECTION_LISTENER);
+        ((JmsConnection) connection).addConnectionListener(new TeroJmsConnectionListener());
         // Create Session
         // Session.CLIENT_ACKNOWLEDGE: 收到消息后，需要手动调用message.acknowledge()。
         // Session.AUTO_ACKNOWLEDGE: SDK自动ACK（推荐）。
@@ -124,56 +124,6 @@ public class AmqpConsumer {
             logger.error("processMessage occurs error ", e);
         }
     }
-
-    private static final JmsConnectionListener MY_JMS_CONNECTION_LISTENER = new JmsConnectionListener() {
-        /**
-         * 连接成功建立。
-         */
-        @Override
-        public void onConnectionEstablished(URI remoteURI) {
-            logger.info("onConnectionEstablished, remoteUri:{}", remoteURI);
-        }
-
-        /**
-         * 尝试过最大重试次数之后，最终连接失败。
-         */
-        @Override
-        public void onConnectionFailure(Throwable error) {
-            logger.error("onConnectionFailure, {}", error.getMessage());
-        }
-
-        /**
-         * 连接中断。
-         */
-        @Override
-        public void onConnectionInterrupted(URI remoteURI) {
-            logger.info("onConnectionInterrupted, remoteUri:{}", remoteURI);
-        }
-
-        /**
-         * 连接中断后又自动重连上。
-         */
-        @Override
-        public void onConnectionRestored(URI remoteURI) {
-            logger.info("onConnectionRestored, remoteUri:{}", remoteURI);
-        }
-
-        @Override
-        public void onInboundMessage(JmsInboundMessageDispatch envelope) {
-        }
-
-        @Override
-        public void onSessionClosed(Session session, Throwable cause) {
-        }
-
-        @Override
-        public void onConsumerClosed(MessageConsumer consumer, Throwable cause) {
-        }
-
-        @Override
-        public void onProducerClosed(MessageProducer producer, Throwable cause) {
-        }
-    };
 
     /**
      * password 签名计算方法，请参见文档：AMQP客户端接入说明。
