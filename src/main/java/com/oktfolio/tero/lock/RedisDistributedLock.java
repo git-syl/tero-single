@@ -1,8 +1,6 @@
 package com.oktfolio.tero.lock;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author oktfolio oktfolio@gmail.com
