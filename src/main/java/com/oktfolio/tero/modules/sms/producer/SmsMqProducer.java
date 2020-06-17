@@ -22,7 +22,10 @@ public class SmsMqProducer extends RocketProducer{
     private final static String TOPIC = "";
     private final static String GROUP_NAME = "";
 
+    private DefaultMQProducer producer = new DefaultMQProducer(GROUP_NAME);
+
     public SmsMqProducer() {
+        setProducer(producer);
     }
 
     public void produce() {
