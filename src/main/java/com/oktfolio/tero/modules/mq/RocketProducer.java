@@ -8,7 +8,6 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
@@ -16,13 +15,16 @@ import java.nio.charset.StandardCharsets;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/16
  */
-public class Rocket {
+public class RocketProducer {
 
-    private final static Logger logger = LoggerFactory.getLogger(Rocket.class);
+    private final static Logger logger = LoggerFactory.getLogger(RocketProducer.class);
 
-    private final DefaultMQProducer producer;
+    private DefaultMQProducer producer = new DefaultMQProducer();
 
-    public Rocket(DefaultMQProducer producer) {
+    public RocketProducer() {
+    }
+
+    public void setProducer(DefaultMQProducer producer) {
         this.producer = producer;
     }
 
