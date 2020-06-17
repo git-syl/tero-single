@@ -1,4 +1,4 @@
-package com.oktfolio.tero.security.handlers;
+package com.oktfolio.tero.security;
 
 import com.oktfolio.tero.utils.Response;
 import org.springframework.http.HttpStatus;

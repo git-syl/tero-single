@@ -2,12 +2,9 @@ package com.oktfolio.tero.modules.mq;
 
 import com.oktfolio.tero.utils.ThreadPoolUtils;
 import org.apache.qpid.jms.JmsConnection;
-import org.apache.qpid.jms.JmsConnectionListener;
-import org.apache.qpid.jms.message.JmsInboundMessageDispatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 import javax.crypto.Mac;
@@ -15,7 +12,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import java.net.URI;
 import java.util.Base64;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +30,7 @@ public class AmqpConsumer {
     private final static String IOT_INSTANCE_ID = "";
     private final static String CLIENT_ID = "";
 
-    //业务处理异步线程池，线程池参数可以根据您的业务特点调整，或者您也可以用其他异步方式处理接收到的消息。
+    // 业务处理异步线程池，线程池参数可以根据您的业务特点调整，或者您也可以用其他异步方式处理接收到的消息。
     private final static ExecutorService executorService = ThreadPoolUtils.getExecutorService();
 
     @EventListener(ApplicationReadyEvent.class)
