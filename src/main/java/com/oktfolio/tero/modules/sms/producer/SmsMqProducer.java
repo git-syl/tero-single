@@ -27,12 +27,6 @@ public class SmsMqProducer {
     private final static String TOPIC = "";
     private final static String GROUP_NAME = "";
 
-    private final Rocket rocket;
-
-    public SmsMqProducer(Rocket rocket) {
-        this.rocket = rocket;
-    }
-
     public void produce() {
 
         String content = "";
@@ -47,17 +41,9 @@ public class SmsMqProducer {
         } catch (MQClientException e) {
             logger.error(e.getMessage());
         }
-        // Create a message instance, specifying topic, tag and message body.
-        Message msg = new Message(TOPIC, TAG, keys, content.getBytes(StandardCharsets.UTF_8));
-        // Call send message to deliver message to one of brokers.
-        SendResult sendResult = null;
-        try {
-            sendResult = producer.send(msg);
-        } catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
+        Rocket rocket = new Rocket(producer);
+        SendResult sendResult = rocket.sendNormalMessage(TOPIC, TAG, keys, content);
         logger.info("sendResult : {}", sendResult);
-        //Shut down once the producer instance is not longer in use.
         producer.shutdown();
     }
 }

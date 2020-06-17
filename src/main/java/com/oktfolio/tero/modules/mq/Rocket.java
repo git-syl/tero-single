@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/16
  */
-@Component
 public class Rocket {
 
     private final static Logger logger = LoggerFactory.getLogger(Rocket.class);
