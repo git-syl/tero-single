@@ -28,7 +28,7 @@ public class RedissonDistributedLock extends AbstractDistributedLock {
         super.unlock();
     }
 
-    private RLock lock(String key, LockTypeEnum type, boolean readOnly) {
+    private RLock lock(String key, DLockTypeEnum type, boolean readOnly) {
         switch (type) {
             case FAIR:
                 return redisson.getFairLock(key);
