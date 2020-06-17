@@ -1,6 +1,5 @@
 package com.oktfolio.tero.modules.sms;
 
-import com.oktfolio.tero.modules.sms.service.SmsService;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -19,7 +18,7 @@ public class SmsContext {
     }
 
     public void send() {
-        SmsStrategy aliSms = smsContextStrategyMap.get("ALI");
-        aliSms.sendSms();
+        SmsStrategy sms = smsContextStrategyMap.get("ALI");
+        sms.sendSms();
     }
 }

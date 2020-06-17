@@ -7,8 +7,8 @@ import com.oktfolio.tero.model.BaseModel;
  * @date 2020/06/15
  */
 public class SmsDO extends BaseModel {
-    private static final long serialVersionUID = 7311275111841576916L;
 
+    private static final long serialVersionUID = 7311275111841576916L;
     /**
      * 任务id
      */
