@@ -42,9 +42,7 @@ public class SmsMqProducer extends RocketProducer{
         } catch (MQClientException e) {
             logger.error(e.getMessage());
         }
-        RocketProducer rocketProducer = new RocketProducer();
-        rocketProducer.setProducer(producer);
-        SendResult sendResult = rocketProducer.sendNormalMessage(TOPIC, TAG, keys, content);
+        SendResult sendResult = sendNormalMessage(TOPIC, TAG, keys, content);
         logger.info("sendResult : {}", sendResult);
         producer.shutdown();
     }

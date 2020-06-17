@@ -28,6 +28,14 @@ public class RocketProducer {
         this.producer = producer;
     }
 
+    /**
+     * normal message
+     * @param topic
+     * @param tag
+     * @param keys
+     * @param content
+     * @return
+     */
     public SendResult sendNormalMessage(String topic,
                                         String tag,
                                         String keys,
@@ -46,6 +54,14 @@ public class RocketProducer {
         return send;
     }
 
+    /**
+     * sequence message
+     * @param topic
+     * @param tag
+     * @param keys
+     * @param content
+     * @return
+     */
     public SendResult sendSequenceMessage(String topic,
                                           String tag,
                                           String keys,
@@ -92,8 +108,8 @@ public class RocketProducer {
     }
 
     /**
-     * 开源版不支持定时消息。
-     *
+     * timing message
+     * community rocket message queue not support
      * @param topic
      * @param tag
      * @param keys
