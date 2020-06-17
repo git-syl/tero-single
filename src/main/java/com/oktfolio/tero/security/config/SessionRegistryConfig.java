@@ -18,9 +18,4 @@ public class SessionRegistryConfig {
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
-
-    @Bean
-    public SessionAuthenticationStrategy getSessionAuthStrategy(SessionRegistry sessionRegistry) {
-        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry);
-    }
 }
