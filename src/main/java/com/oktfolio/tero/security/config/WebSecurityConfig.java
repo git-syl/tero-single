@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.cors.CorsUtils;
 
 /**
@@ -34,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
     public WebSecurityConfig(ITeroUserDetailsService userDetailsService,
                              AccessDeniedHandler accessDeniedHandler,
@@ -41,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                              AuthenticationSuccessHandler authenticationSuccessHandler,
                              PasswordEncoder passwordEncoder,
                              LogoutSuccessHandler logoutSuccessHandler,
-                             AuthenticationEntryPoint authenticationEntryPoint) {
+                             AuthenticationEntryPoint authenticationEntryPoint,
+                             SessionAuthenticationStrategy sessionAuthenticationStrategy) {
         this.userDetailsService = userDetailsService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
@@ -49,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
         this.logoutSuccessHandler = logoutSuccessHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.sessionAuthenticationStrategy = sessionAuthenticationStrategy;
     }
 
     @Override
@@ -158,6 +162,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
         return filter;
     }
 
@@ -167,6 +172,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login/email");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
         return filter;
     }
 
@@ -176,6 +182,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login/email");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
         return filter;
     }
 
@@ -185,6 +192,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login/phone");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
         return filter;
     }
 
@@ -194,6 +202,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login/phone");
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
         return filter;
     }
 }
