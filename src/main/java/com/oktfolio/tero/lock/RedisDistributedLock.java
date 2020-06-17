@@ -8,10 +8,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/15
  */
-public class RedisDLock implements DistributedLock {
+public class RedisDistributedLock extends AbstractDistributedLock {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public RedisDistributedLock(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void unlock() {

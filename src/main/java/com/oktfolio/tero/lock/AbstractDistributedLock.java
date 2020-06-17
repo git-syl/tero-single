@@ -2,10 +2,9 @@ package com.oktfolio.tero.lock;
 
 /**
  * @author oktfolio oktfolio@gmail.com
- * @date 2020/06/15
+ * @date 2020/06/17
  */
-public class ZookeeperDLock implements DistributedLock {
-
+public class AbstractDistributedLock implements DistributedLock{
     @Override
     public DLockInfo tryLock() {
         return null;
