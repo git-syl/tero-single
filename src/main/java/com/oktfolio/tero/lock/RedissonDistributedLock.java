@@ -10,7 +10,7 @@ import org.redisson.api.RedissonClient;
  */
 public class RedissonDistributedLock extends AbstractDistributedLock {
 
-    private RedissonClient redisson;
+    private final RedissonClient redisson;
     private RLock lock;
 
     public RedissonDistributedLock(RedissonClient redisson) {

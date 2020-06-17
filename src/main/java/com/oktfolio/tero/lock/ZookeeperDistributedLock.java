@@ -12,9 +12,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZookeeperDistributedLock implements DistributedLock {
 
-    private CuratorFramework client;
+    private final CuratorFramework client;
 
     public ZookeeperDistributedLock(CuratorFramework client) {
+        super();
         this.client = client;
     }
 
