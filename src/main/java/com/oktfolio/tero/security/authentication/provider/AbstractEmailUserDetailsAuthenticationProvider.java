@@ -46,7 +46,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
      * will at least compare the {@link Authentication#getCredentials()} with a
      * {@link UserDetails#getPassword()}. If custom logic is needed to compare additional
      * properties of <code>UserDetails</code> and/or
-     * <code>UsernamePasswordAuthenticationToken</code>, these should also appear in this
+     * <code>EmailAuthenticationToken</code>, these should also appear in this
      * method.
      *
      * @param userDetails as retrieved from the
@@ -167,7 +167,7 @@ public abstract class AbstractEmailUserDetailsAuthenticationProvider
         // so subsequent attempts are successful even with encoded passwords.
         // Also ensure we return the original getDetails(), so that future
         // authentication events after cache expiry contain the details
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
+        EmailAuthenticationToken result = new EmailAuthenticationToken(
                 principal, authentication.getCredentials(),
                 authoritiesMapper.mapAuthorities(user.getAuthorities()));
         result.setDetails(authentication.getDetails());
