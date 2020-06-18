@@ -13,10 +13,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/17
  */
-@Component
 public class SecurityUtils {
 
-    public ITeroUserDetails getCurrentUser() {
+    public static ITeroUserDetails getCurrentUser() {
         Authentication authentication = getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof ITeroUserDetails) {
             return (TeroUserDetails) authentication.getPrincipal();
@@ -24,7 +23,7 @@ public class SecurityUtils {
         return null;
     }
 
-    public ITeroUserDetails getCurrentUser(HttpServletRequest request) {
+    public static ITeroUserDetails getCurrentUser(HttpServletRequest request) {
         Authentication authentication = getAuthentication(request);
         if (authentication != null && authentication.getPrincipal() instanceof ITeroUserDetails) {
             return (TeroUserDetails) authentication.getPrincipal();
@@ -32,13 +31,13 @@ public class SecurityUtils {
         return null;
     }
 
-    public Authentication getAuthentication() {
+    public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public Authentication getAuthentication(HttpServletRequest request) {
+    public static Authentication getAuthentication(HttpServletRequest request) {
         SecurityContextImpl securityContextImpl = (SecurityContextImpl) request
                 .getSession().getAttribute("SPRING_SECURITY_CONTEXT");
-        return securityContextImpl.getAuthentication();
+        return securityContextImpl == null ? null : securityContextImpl.getAuthentication();
     }
 }
