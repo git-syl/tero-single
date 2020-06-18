@@ -14,6 +14,7 @@ import java.io.IOException;
  * @author oktfolio oktfolio@gmail.com
  * @date 2020/06/17
  */
+@Component
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
     @Override
