@@ -5,6 +5,7 @@ package com.oktfolio.tero.lock;
  * @date 2020/06/17
  */
 public class AbstractDistributedLock implements DistributedLock{
+
     @Override
     public DLockInfo tryLock() {
         return null;
