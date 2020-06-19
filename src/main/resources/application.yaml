@@ -18,6 +18,8 @@ spring:
         max-active: 8
         max-idle: 8
         max-wait: -1ms
+  main:
+    allow-bean-definition-overriding: true
 tero:
   minio:
     endpoint: http://127.0.0.1:19000
