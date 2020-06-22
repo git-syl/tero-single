@@ -73,9 +73,11 @@ public class MultiWebSecurityConfig {
                     .requestMatchers(CorsUtils::isPreFlightRequest)
                     .permitAll();
 
-//        http.authorizeRequests()
-//                .anyRequest()
-//                .authenticated()
+            // http.authorizeRequests()
+            //         .anyRequest()
+            //         .authenticated();
+
+            http.oauth2Login();
 
 //        http.authorizeRequests()
 //                .anyRequest()

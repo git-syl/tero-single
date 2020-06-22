@@ -20,6 +20,14 @@ spring:
         max-wait: -1ms
   main:
     allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 03c5991679bd1d54e66a
+            client-secret: f964443bb484a599dbe87f952232990487944f56
+
 tero:
   minio:
     endpoint: http://127.0.0.1:19000
