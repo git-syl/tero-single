@@ -31,6 +31,7 @@ public class MultiWebSecurityConfig {
 
     @Configuration
     @Order(Ordered.LOWEST_PRECEDENCE - 100)
+    @EnableRedisHttpSession
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     protected static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
