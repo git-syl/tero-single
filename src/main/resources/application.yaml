@@ -27,7 +27,8 @@ spring:
           github:
             client-id: 03c5991679bd1d54e66a
             client-secret: f964443bb484a599dbe87f952232990487944f56
-
+  session:
+    store-type: redis
 tero:
   minio:
     endpoint: http://127.0.0.1:19000
