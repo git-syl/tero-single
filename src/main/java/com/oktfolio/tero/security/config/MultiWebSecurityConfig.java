@@ -77,7 +77,7 @@ public class MultiWebSecurityConfig {
             //         .anyRequest()
             //         .authenticated();
 
-            http.oauth2Login();
+            // http.oauth2Login();
 
 //        http.authorizeRequests()
 //                .anyRequest()

@@ -72,7 +72,6 @@ public class JsonEmailAuthenticationFilter extends EmailAuthenticationFilter{
                             emailCode.getCode());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
                 logger.error("failed to obtain json from request, {}", e.getMessage());
                 authRequest = new EmailAuthenticationToken(
                         "", "");
