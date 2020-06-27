@@ -69,11 +69,14 @@ public class MultiWebSecurityConfig {
             http.csrf().disable();
 
             // session management
+            // default migrateSession
             http.sessionManagement()
                     .sessionFixation()
-                    .newSession()
+                    .migrateSession()
+                    // user max session num, -1 no limit
                     .maximumSessions(-1)
-                    .maxSessionsPreventsLogin(true);
+                    // 达到 max 会话，true 阻止登录， false 踢掉之前的会话
+                    .maxSessionsPreventsLogin(false);
 
             http.userDetailsService(userDetailsService);
 
@@ -81,6 +84,13 @@ public class MultiWebSecurityConfig {
             http.authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest)
                     .permitAll();
+
+            // grant all preflight request
+            http.authorizeRequests()
+                    .antMatchers("remember-me")
+                    .authenticated();
+
+            http.rememberMe();
 
             // http.authorizeRequests()
             //         .anyRequest()
