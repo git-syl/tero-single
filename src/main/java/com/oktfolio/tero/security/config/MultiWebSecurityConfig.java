@@ -68,6 +68,13 @@ public class MultiWebSecurityConfig {
             // csrf
             http.csrf().disable();
 
+            // session management
+            http.sessionManagement()
+                    .sessionFixation()
+                    .newSession()
+                    .maximumSessions(-1)
+                    .maxSessionsPreventsLogin(true);
+
             http.userDetailsService(userDetailsService);
 
             // grant all preflight request
